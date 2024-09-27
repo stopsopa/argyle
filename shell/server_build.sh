@@ -6,6 +6,9 @@
 # more about ROOT variable in shell/vite.sh
 ROOT="$(pwd)"
 
+set -x
+set -e
+
 SERVER_BUILD="${ROOT}/server-build"
 
 rm -rf "${SERVER_BUILD}";
