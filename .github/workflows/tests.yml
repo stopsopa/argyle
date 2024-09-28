@@ -70,7 +70,7 @@ jobs:
       - name: MySQL connectivity test
         run: |
           set -e
-          yarn add -D knex
+          yarn add -D knex mysql
           node .github/mysql-test.js
       # - name: MySQL migrations
       #   run: cd migrations && yarn migrate
@@ -84,5 +84,4 @@ jobs:
         run: npm run server:build
       - name: UNIT TESTS
         run: npx jest
-        
         
