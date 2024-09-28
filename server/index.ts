@@ -57,7 +57,7 @@ const __dirname = path.dirname(__filename);
 
   /**
    * and if request was not handled by any other route and reached the end
-   * serve default index.html for vite if request accepting html
+   * serve default index.html for vite if request 'accept' header has text/html
    */
   app.get("*", (req: Request, res: Response, next) => {
     if (req.headers?.accept?.includes("text/html")) {
