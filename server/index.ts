@@ -9,8 +9,6 @@ import env, { envInt } from "./lib/env";
 import checkDir from "./lib/checkDir";
 import checkFile from "./lib/checkFile";
 
-import { fileURLToPath } from "url";
-
 import getPool, { setupPool } from "./modules/mysql";
 
 import { PaymentsType } from "./model/payments";
@@ -36,7 +34,7 @@ import { PaymentsType } from "./model/payments";
 
   app.use(express.static(directory));
 
-  const port = envInt("PORT", "3000");
+  const port = envInt("NODE_PORT", "3000");
 
   app.get("/", (req: Request, res: Response) => {
     res.send("Express + TypeScript Server");
