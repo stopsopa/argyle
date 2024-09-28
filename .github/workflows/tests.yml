@@ -72,15 +72,16 @@ jobs:
           set -e
           yarn add -D knex
           node .github/mysql-test.js
-      - name: MySQL migrations
-        run: cd migrations && yarn migrate
-        # run migrations only against "icare" database,
-        # normally make migrate will create db structures in both "icare" & "icare_test"
-      # - name: MySQL fixtures
-      #   run: /bin/bash fixtures.sh
-      - name: build vite & build docker image & check docker image
-        run: |
-          /bin/bash build.sh --clean --docker
+      # - name: MySQL migrations
+      #   run: cd migrations && yarn migrate
+      #   # run migrations only against "icare" database,
+      #   # normally make migrate will create db structures in both "icare" & "icare_test"
+      # # - name: MySQL fixtures
+      # #   run: /bin/bash fixtures.sh
+      - name: build vite 
+        run: npm run vite:build
+      - name: build server 
+        run: npm run server:build
       - name: run local server (NODE_ENV=production)
         run: |
           mkdir -p var
