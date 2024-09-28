@@ -24,18 +24,18 @@ EEE
 
 }
 
-log "rm -rf var/package.json"
+log "rm -rf var/package.cp.json"
 
-rm -rf var/package.json
+rm -rf var/package.cp.json
 
-log "cp package.json var/package.json"
+log "cp package.json var/package.cp.json"
 
-cp package.json var/package.json
+cp package.json var/package.cp.json
 
 function cleanup {
-    log "mv var/package.json package.json"
+    log "mv var/package.cp.json package.json"
 
-    mv var/package.json package.json
+    mv var/package.cp.json package.json
 }
 
 # register function executed at the script exit

@@ -35,9 +35,12 @@
 
 set -e
 
+if [ ! -d 'node_modules' ]; then
+    yarn install --frozen-lockfile --production=false
+fi
+
 # I've delageted stripping "module" from package.json to separate script (noesm.sh)
 # It has potential to be useful for other things in this project
-chmod +x shell/noesm.sh
 
 sh shell/noesm.sh \
     node node_modules/.bin/jest $@
