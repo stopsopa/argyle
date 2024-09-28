@@ -1,5 +1,7 @@
-
-
+# 
+# run from host machine
+# =====================
+# 
 # This script is to just run vite "npm run ..." commands from root directory of the project.
 # Without need to switch directories every time like "cd vite && npm run dev"
 

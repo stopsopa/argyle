@@ -1,5 +1,10 @@
 
-exec 2>&1
+#
+# run from container -> see docker-compose.yml
+# ============================================
+# 
+# script to create database and load fixtures during docker-compose up
+#
 
 # The 'set -e' command in this script ensures that the script will exit immediately if any command exits with a non-zero status.
 # This is useful for preventing the execution of subsequent commands if an error occurs, making the script more robust and easier to debug.
@@ -13,6 +18,9 @@ mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "DROP DATABASE IF EXISTS ${MY
 
 mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB} /*\!40100 DEFAULT CHARACTER SET utf8 */"
 
+# I culd create table here but I will use restore.sh instead
+# restoring data AND structure in one go
+#
 # mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "
 # CREATE TABLE `payments` (
 #   `id` int NOT NULL AUTO_INCREMENT,
