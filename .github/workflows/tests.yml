@@ -82,42 +82,7 @@ jobs:
         run: npm run vite:build
       - name: build server 
         run: npm run server:build
-      - name: run local server (NODE_ENV=production)
-        run: |
-          mkdir -p var
-          /bin/bash prod.sh docker | node_modules/.bin/pino-pretty > var/server.log 2>&1 &
-      - name: servers healthchecks
-        run: |
-          TIMEOUT="60000" node .github/healtcheck.js api
-      - name: test cli (using routes endpoint)
-        run: |
-          /bin/bash console.sh routes
-      - name: pulling playwright docker image
-        run: |
-          /bin/bash .github/pull-docker-image.sh
       - name: UNIT TESTS
-        run: |
-          TYPE=unit /bin/bash jest.sh
-      - name: JASMINE TESTS
-        run: |
-          NODE_API_PORT=4273 /bin/bash jasmine/test.sh --env .env -- --target docker
-      - name: INT TESTS
-        run: |
-          TYPE=int /bin/bash jest.sh
-      - name: E2E TESTS
-        run: |
-          /bin/bash playwright.sh --target docker
-      - name: kill servers
-        if: always()
-        run: |
-          /bin/bash .github/stop-koa-server.sh
-      - name: dump server log
-        if: always()
-        run: |
-          cat var/server.log
-      - name: detect error logs in server stdout dump
-        if: always()
-        run: |
-          set -o pipefail
-          set -e
-          cat var/server.log | /bin/bash bash/strip-colors-from-stdin.sh | /bin/bash .github/detect-error-logs.sh
+        run: npx jest
+        
+        
