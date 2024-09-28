@@ -1,0 +1,122 @@
+# use [no ci] to skip triggering pipeline
+#     from: https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
+
+name: Testing
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  # trigger only for master and PR, commits to branches will be ignored
+  # if you wan't to trigger ci/cd for branch then just create PR
+jobs:
+  test:
+    runs-on: ubuntu-22.04 # https://github.com/actions/runner-images#available-images
+    timeout-minutes: 10
+    services: # https://github.com/actions/example-services/actions/runs/449599975/workflow
+      mysql:
+        image: mysql/mysql-server:8.0.27
+        env:
+          #          MYSQL_DATABASE: knex
+          #          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: pass
+          MYSQL_ROOT_HOST: "%"
+        ports:
+          - 4211:3306
+        # needed because the mysql container does not provide a healthcheck
+        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idservicesservice_idoptions
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=10 --name=mysql_container
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.17.0
+          cache: "yarn"
+
+      - name: test before bringing cache
+        if: always()
+        run: |
+          set -x
+          pwd
+          ls -la
+          ls -la node_modules || true
+
+      - uses: actions/cache/restore@v3 # https://github.com/actions/cache/blob/main/examples.md#node---yarn
+        id: restore-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: test if cache revived?
+        if: always()
+        run: |
+          set -x
+          pwd
+          ls -la
+          ls -la node_modules || true
+
+      - name: Yarn install
+        run: yarn install --production=false
+
+      - uses: actions/cache/save@v3 # https://github.com/actions/cache/blob/main/caching-strategies.md#reusing-primary-key-from-restore-cache-as-input-to-save-action
+        with:
+          path: node_modules
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+
+      - name: MySQL healthy?
+        run: docker ps
+      - name: MySQL root access
+        run: /bin/bash .github/mysql-root-access.sh
+      - name: MySQL connectivity test
+        run: |
+          set -e
+          yarn add -D knex
+          node .github/mysql-test.js
+      - name: MySQL migrations
+        run: cd migrations && yarn migrate
+        # run migrations only against "icare" database,
+        # normally make migrate will create db structures in both "icare" & "icare_test"
+      # - name: MySQL fixtures
+      #   run: /bin/bash fixtures.sh
+      - name: build vite & build docker image & check docker image
+        run: |
+          /bin/bash build.sh --clean --docker
+      - name: run local server (NODE_ENV=production)
+        run: |
+          mkdir -p var
+          /bin/bash prod.sh docker | node_modules/.bin/pino-pretty > var/server.log 2>&1 &
+      - name: servers healthchecks
+        run: |
+          TIMEOUT="60000" node .github/healtcheck.js api
+      - name: test cli (using routes endpoint)
+        run: |
+          /bin/bash console.sh routes
+      - name: pulling playwright docker image
+        run: |
+          /bin/bash .github/pull-docker-image.sh
+      - name: UNIT TESTS
+        run: |
+          TYPE=unit /bin/bash jest.sh
+      - name: JASMINE TESTS
+        run: |
+          NODE_API_PORT=4273 /bin/bash jasmine/test.sh --env .env -- --target docker
+      - name: INT TESTS
+        run: |
+          TYPE=int /bin/bash jest.sh
+      - name: E2E TESTS
+        run: |
+          /bin/bash playwright.sh --target docker
+      - name: kill servers
+        if: always()
+        run: |
+          /bin/bash .github/stop-koa-server.sh
+      - name: dump server log
+        if: always()
+        run: |
+          cat var/server.log
+      - name: detect error logs in server stdout dump
+        if: always()
+        run: |
+          set -o pipefail
+          set -e
+          cat var/server.log | /bin/bash bash/strip-colors-from-stdin.sh | /bin/bash .github/detect-error-logs.sh
