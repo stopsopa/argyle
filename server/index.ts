@@ -15,9 +15,6 @@ import getPool, { setupPool } from "./modules/mysql";
 
 import { PaymentsType } from "./model/payments";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 (async function () {
   // deliberately not using try catch here, errors happening during server setup should crash the server
 
