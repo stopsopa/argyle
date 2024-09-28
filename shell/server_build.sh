@@ -1,5 +1,7 @@
-
-#
+# 
+# run from host machine
+# =====================
+# 
 # I would like to clean directory before build. hence this script.
 # 
 

@@ -1,5 +1,9 @@
-
-exec 2>&1
+#
+# run from container -> execcuted in fixtures.sh triggered in docker-compose.yml
+# ==============================================================================
+# 
+# sctript used to restore the database from a backup file during docker-compose up
+#
 
 # The 'set -e' command in this script ensures that the script will exit immediately if any command exits with a non-zero status.
 # This is useful for preventing the execution of subsequent commands if an error occurs, making the script more robust and easier to debug.
