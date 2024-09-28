@@ -51,8 +51,8 @@ services:
     container_name: ${PROJECT_NAME}_fixtures
     working_dir: /data
     volumes:
-      - ./docker/fixtures/:/data/
-      - .env/:/data/.env
+      - ./shell/:/data/
+      - ./.env:/data/.env
     entrypoint: >
       bash -c "      
       /bin/bash fixtures.sh > log.log       
