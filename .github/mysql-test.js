@@ -9,7 +9,7 @@ const fs = require("fs");
 // const fs = require("fs");
 const dotenv = require("dotenv"); // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 const knex = require("knex");
-const getDbName = require("./getDbName.cjs");
+const getDbName = require("./getDbName.js");
 
 // import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 
