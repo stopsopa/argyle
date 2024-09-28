@@ -14,12 +14,12 @@
     "server:check": "tsc --noEmit",
     "server:build": "/bin/bash shell/server_build.sh",
     "server:dev": "npx nodemon server/index.ts",
-    "server:run": "node server-build/index.js",
-    "test": "/bin/bash jest.sh"
+    "server:run": "node server-build/index.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "mysql2": "^3.11.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -34,7 +34,6 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "jest": "^29.7.0",
-    "mysql2": "^3.11.3",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "react": "^18.3.1",

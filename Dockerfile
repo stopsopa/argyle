@@ -12,7 +12,7 @@ RUN NODE_ENV="production" /bin/sh shell/vite.sh npm run build && \
 ENTRYPOINT echo "build Dockerfile stage"
 
 FROM base_stage AS unit
-RUN sh jest.sh
+RUN npx jest
 ENTRYPOINT echo "unit Dockerfile stage"
 
 FROM node:20.17.0-alpine AS image
