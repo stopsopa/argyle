@@ -1,3 +1,4 @@
+#!/bin/sh
 # 
 # run from host machine
 # =====================
@@ -30,7 +31,7 @@ function cleanup {
 # register function executed at the script exit
 trap cleanup EXIT;
 
-# I could use sed here but I'm not sure if it's available on all systems
+# I could use 'sed' here but I'm not sure if it's available on all systems this project will be executed
 # ... but know node is available
 node -e "
 const fs = require('fs');
