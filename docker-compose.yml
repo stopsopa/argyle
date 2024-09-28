@@ -61,25 +61,6 @@ services:
       - scoped-network
     restart: "no"
 
-  # load-fixtures:
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #   image: mysql:latest
-  #   container_name: ${PROJECT_NAME}_load_fixtures
-  #   volumes:
-  #     - ./fixtures:/docker-entrypoint-initdb.d
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
-  #   command: >
-  #     sh -c "
-  #       for sql_file in /docker-entrypoint-initdb.d/*.sql; do
-  #         mysql -h mysql -u root -p${MYSQL_PASS} < $sql_file;
-  #       done
-  #     "
-  #   networks:
-  #     - scoped-network
-
 networks:
   scoped-network:
     name: network-${PROJECT_NAME}

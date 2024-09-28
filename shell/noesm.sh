@@ -13,16 +13,16 @@
 
 set -e
 
-echo "${0} >>> rm -rf var/package.json"
+echo -e "${0} >>> rm -rf var/package.json\n"
 
 rm -rf var/package.json
 
-echo "${0} >>> cp package.json var/package.json"
+echo -e "${0} >>> cp package.json var/package.json\n"
 
 cp package.json var/package.json
 
 function cleanup {
-    echo "${0} >>> mv var/package.json package.json"
+    echo -e "${0} >>> mv var/package.json package.json\n"
 
     mv var/package.json package.json
 }

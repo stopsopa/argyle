@@ -1,5 +1,5 @@
 
-# I have "type": "module" (esm) enabled in package.json
+# I have "type": "module" (esm) enabled in package.json for this project
 # I can transpile typescript to esm and run it with node natively
 # All modes:
 #  - build               (npm run server:build)
@@ -22,14 +22,21 @@
 # just remove "type": "module" for the time of jest execution. 
 # it seems to do the job.
 # 
-# so this script is just for that purpose
-# instead of running 
+# This script is for that purpose.
+# 
+# So from now instead of running 
+# 
 #   npx jest [...args]
+# 
 # just run
+# 
 #   /bin/bash jest.sh [...args]
 #
 
 set -e
 
-# I've delageted swapping to separate script (noesm.sh)- It might be useful for othe things too
-/bin/bash shell/noesm.sh node node_modules/.bin/jest $@
+# I've delageted stripping "module" from package.json to separate script (noesm.sh)
+# It has potential to be useful for other things in this project
+
+/bin/bash shell/noesm.sh \
+    node node_modules/.bin/jest $@
