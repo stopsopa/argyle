@@ -1,0 +1,5 @@
+{
+  "explorer.autoRevealExclude": {
+    "**/node_modules": false
+  }
+}
