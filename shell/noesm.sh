@@ -14,16 +14,26 @@
 
 set -e
 
-echo -e "${0} >>> rm -rf var/package.json\n"
+
+function log {
+
+cat <<EEE
+${0} >>> ${1}
+    
+EEE
+
+}
+
+log "rm -rf var/package.json"
 
 rm -rf var/package.json
 
-echo -e "${0} >>> cp package.json var/package.json\n"
+log "cp package.json var/package.json"
 
 cp package.json var/package.json
 
 function cleanup {
-    echo -e "${0} >>> mv var/package.json package.json\n"
+    log "mv var/package.json package.json"
 
     mv var/package.json package.json
 }

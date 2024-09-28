@@ -14,3 +14,8 @@ source ".env"
 mysql --version
 
 mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} ${MYSQL_DB} < backup/backup.sql
+
+# uncomment sleep below, docker compose up and observe docker ps to see that first lauches mysql once it reaches state healthy
+# then fixtures container is launched
+# only after that node image is launched when everything is ready
+# sleep 3
