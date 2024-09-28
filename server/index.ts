@@ -13,6 +13,8 @@ import getPool, { setupPool } from "./modules/mysql";
 
 import { PaymentsType } from "./model/payments";
 
+import api from "./api";
+
 (async function () {
   // deliberately not using try catch here, errors happening during server setup should crash the server
 
@@ -36,9 +38,7 @@ import { PaymentsType } from "./model/payments";
 
   const port = envInt("NODE_PORT", "3000");
 
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Express + TypeScript Server");
-  });
+  app.use("/api", api);
 
   app.get("/sql", async (req: Request, res: Response) => {
     try {

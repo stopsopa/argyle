@@ -6,12 +6,23 @@ import "./App.css";
 function App() {
   const [count, setCount] = useState(0);
 
+  const [json, setJson] = useState(false);
+
+  async function load() {
+    const res = await fetch("/api/test");
+
+    const json = await res.json();
+
+    setJson(json);
+  }
+
   return (
     <>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
+
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
@@ -24,6 +35,8 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <button onClick={load}>load</button>
+      {json && <pre>{JSON.stringify(json, null, 4)}</pre>}
     </>
   );
 }
