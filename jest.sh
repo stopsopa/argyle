@@ -37,6 +37,7 @@ set -e
 
 # I've delageted stripping "module" from package.json to separate script (noesm.sh)
 # It has potential to be useful for other things in this project
+chmod +x shell/noesm.sh
 
-/bin/bash shell/noesm.sh \
+sh shell/noesm.sh \
     node node_modules/.bin/jest $@

@@ -1,0 +1,15 @@
+.gitignore
+/.git/
+node_modules
+/var/*
+!/var/.gitignore
+.DS_Store
+/docker/
+/coverage/
+/server-build/
+*.zip
+nodemon.json
+Dockerfile
+.nvmrc
+.dockerignore
+docker-compose.yml
