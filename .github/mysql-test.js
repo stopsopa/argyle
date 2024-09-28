@@ -1,20 +1,22 @@
+const path = require("path");
+// import path from "path";
+
+const fs = require("fs");
+// import fs from "fs";
+
+
 // const path = require("path");
-import path from "path";
-
 // const fs = require("fs");
-import fs from "fs";
+const dotenv = require("dotenv"); // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+const knex = require("knex");
+const getDbName = require("./getDbName.cjs");
 
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+// import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 
-import knex from "knex";
+// import knex from "knex";
 
-import { fileURLToPath } from "url";
 
-import getDbName from "../getDbName.cjs";
-
-const __filename = fileURLToPath(import.meta.url);
-
-const __dirname = path.dirname(__filename);
+// import getDbName from "./getDbName.cjs";
 
 const env = path.resolve(__dirname, "..", ".env");
 
