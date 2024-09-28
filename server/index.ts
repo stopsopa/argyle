@@ -2,6 +2,15 @@ import "dotenv/config";
 
 import express, { Express, Request, Response } from "express";
 
+import { setupPool } from "./modules/mysql";
+
+setupPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database
+});
+
 const app: Express = express();
 
 app.use(express.json());
