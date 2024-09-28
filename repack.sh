@@ -12,6 +12,8 @@ tar -zcvf STOPSOPA__argyle.tar.gz \
     --exclude "build" \
     --exclude "vite/dist" \
     --exclude "docker/mysql_db" \
+    --exclude "*.log" \
+    --exclude "shell/.env" \
     --exclude "coverage" \
     --exclude ".DS_Store" \
     --exclude "docker/fixtures/.env" \
@@ -19,6 +21,7 @@ tar -zcvf STOPSOPA__argyle.tar.gz \
     --exclude "*.zip" \
     STOPSOPA__argyle
 
+rm -rf sd-project.zip
 rm -rf sd-project
 mkdir -p sd-project/node
 mv STOPSOPA__argyle.tar.gz sd-project/node
@@ -28,15 +31,17 @@ cd sd-project/node
 tar -zxvf STOPSOPA__argyle.tar.gz
 
 rm -rf STOPSOPA__argyle.tar.gz
-pwd
 mv STOPSOPA__argyle/* .
 mv STOPSOPA__argyle/.* .
 rm -rf STOPSOPA__argyle
 mv README_PARENT.md ../README.md
 cd ../..
 
-# tar -zcvf sd-project.tar.gz sd-project
+# # tar -zcvf sd-project.tar.gz sd-project
 zip -r sd-project.zip sd-project
+pwd
+ls -la
+ls -la sd-project/
 
 )
 
