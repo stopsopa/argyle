@@ -56,7 +56,9 @@ describe("nlp", () => {
 
         done(`Shouln't reach the end`);
       } catch (e) {
-        expect(String(e)).toEqual("Error: tlp.js:extractComparisonTerm error: No numeric words found beyond comparison terms");
+        expect(String(e)).toEqual(
+          "Error: tlp.js:extractComparisonTerm error: No numeric words found beyond comparison terms",
+        );
 
         done();
       }
@@ -85,9 +87,9 @@ describe("nlp", () => {
 
       done(`Shouln't reach the end`);
     } catch (e) {
-        expect(String(e)).toEqual("Error: tlp.js:deduplicateDuplicated error: consecutive word four");
+      expect(String(e)).toEqual("Error: tlp.js:deduplicateDuplicated error: consecutive word four");
 
-        done();
+      done();
     }
   });
 });

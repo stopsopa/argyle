@@ -74,7 +74,7 @@ function App() {
                   {list.map((item) => (
                     <tr key={item.id}>
                       <td>{item.id}</td>
-                      <td>{formatNumber(item.amount, ', ')}</td>
+                      <td>{formatNumber(item.amount, ", ")}</td>
                       <td>{item.created}</td>
                       <td>{item.updated}</td>
                     </tr>

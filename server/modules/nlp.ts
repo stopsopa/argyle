@@ -56,7 +56,7 @@ export function deduplicate(list: string[]): void {
  * hundreds -> hundred
  * thousands -> thousand
  * millions -> million
- * 
+ *
  * Modifies in place
  */
 export function normalizeScales(list: string[]): void {
