@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: docker ps
+        if: always()
+        run: |
+          docker ps
       - uses: actions/checkout@v4
 
       # let's start compose up right after clone and move on with next steps
