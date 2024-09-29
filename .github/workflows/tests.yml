@@ -42,8 +42,7 @@ jobs:
         run: docker ps
 
       - name: prettier check
-        run: |
-          npx prettier --config prettier.config.mjs --check server
+        run: npx prettier --config prettier.config.mjs --check server
           npx prettier --config prettier.config.mjs --check vite
         # normally I would run here npx prettier --config prettier.config.mjs --check .
         # but pipeline was throwing: https://i.imgur.com/BMn468p.png
