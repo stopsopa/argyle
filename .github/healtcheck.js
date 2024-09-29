@@ -84,13 +84,9 @@ logger(`healthcheckTimeoutMilliseconds: ${healthcheckTimeoutMilliseconds}`);
             const res = await fetch(endpoint, {
               signal: AbortSignal.timeout(5000),
             });
-
-            const body = await res.text();
-
-            logger(`body obtained: >${body}<`);
-
-            if (body !== "true") {
-              throw new Error(`body is not equal true >${body}<`);
+            
+            if (!res.ok) {
+              throw new Error(`status is not 200 >${res.status}<`);
             }
 
             logger(`attempt to ping front healthcheck endpoint: ${endpoint} success`);

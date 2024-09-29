@@ -10,9 +10,20 @@ router.get("/healthcheck", async (req: Request, res: Response) => {
   try {
     const pool = getPool();
 
+    // It's probably not the best condition to check if table is not empty
+    // But I'm checking what I need to check in the scope of this task
+    // This is later consumed by
+    // TIMEOUTSEC="1000" node .github/healtcheck.js in the pipeline
+    // and in the docker compose file too
     const [results] = await pool.execute<Count[]>("SELECT count(*) count FROM payments");
 
     const count = results?.[0]?.count;
+
+    if (count > 0) {
+      res.send("true");
+    } else {
+      res.status(500).send("false"); // 500 since this is server issue
+    }
 
     res.send(count > 0 ? "true" : "false");
   } catch (e) {}
@@ -23,7 +34,7 @@ router.get("/test", (req: Request, res: Response) => {
 });
 
 router.get("/timeout", (req: Request, res: Response) => {
-//   res.json({ all: new Date().getTime() });
+  //   res.json({ all: new Date().getTime() });
 });
 
 export default router;

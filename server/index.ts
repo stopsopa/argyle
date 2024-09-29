@@ -15,20 +15,6 @@ import { PaymentsType } from "./model/payments";
 
 import api from "./api";
 
-console.log(
-  JSON.stringify(
-    {
-      port: envInt("MYSQL_PORT"),
-      host: env("MYSQL_HOST"),
-      user: env("MYSQL_USER"),
-      database: env("MYSQL_DB"),
-      password: env("MYSQL_PASS"),
-    },
-    null,
-    4,
-  ),
-);
-
 (async function () {
   // deliberately not using try catch here, errors happening during server setup should crash the server
 
