@@ -1,4 +1,4 @@
-import nlp, { extractComparisonTerm } from "./nlp";
+import nlp, { extractComparisonTerm, normalizeScales, deduplicate } from "./nlp";
 
 describe("nlp", () => {
   it("not as string", (done) => {
@@ -27,11 +27,11 @@ describe("nlp", () => {
   describe("extractComparisonTerm", () => {
     it("find", (done) => {
       try {
-        const ret = extractComparisonTerm(["over", "equal", "under", "one"]);
+        const result = extractComparisonTerm(["over", "equal", "under", "one"]);
 
-        expect(ret.comparison).toEqual("over");
+        expect(result.comparison).toEqual("over");
 
-        expect(ret.words).toEqual(["one"]);
+        expect(result.words).toEqual(["one"]);
 
         done();
       } catch (e) {
@@ -45,7 +45,7 @@ describe("nlp", () => {
 
         done(`Shouln't reach the end`);
       } catch (e) {
-        expect(String(e)).toEqual("Error: extractComparisonTerm error: No comparison term found");
+        expect(String(e)).toEqual("Error: tlp.js:extractComparisonTerm error: No comparison term found");
 
         done();
       }
@@ -56,10 +56,38 @@ describe("nlp", () => {
 
         done(`Shouln't reach the end`);
       } catch (e) {
-        expect(String(e)).toEqual("Error: extractComparisonTerm error: No numeric words found beyond comparison terms");
+        expect(String(e)).toEqual("Error: tlp.js:extractComparisonTerm error: No numeric words found beyond comparison terms");
 
         done();
       }
     });
+  });
+
+  it("normalizeScales", (done) => {
+    try {
+      const seed = ["over", "millions", "under", "one"];
+
+      normalizeScales(seed);
+
+      expect(seed).toEqual(["over", "million", "under", "one"]);
+
+      done();
+    } catch (e) {
+      done(`Shouldn't throw an error >${e}<`);
+    }
+  });
+
+  it("deduplicate", (done) => {
+    try {
+      const seed = ["over", "four", "four", "one"];
+
+      deduplicate(seed);
+
+      done(`Shouln't reach the end`);
+    } catch (e) {
+        expect(String(e)).toEqual("Error: tlp.js:deduplicateDuplicated error: consecutive word four");
+
+        done();
+    }
   });
 });

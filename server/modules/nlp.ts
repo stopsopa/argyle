@@ -30,20 +30,57 @@
 
 //    ]
 
+// equal two thousand and forty five
+// equal to $2045
+// under three million one hundred thousand and ninety
+// asdasd -> Incorrect input
+// one one -> Incorrect input
+
+import { directory, sequence, multipliers, normalize } from "./nlp.dictionary";
+
+/**
+ * one one -> Incorrect input
+ */
+export function deduplicate(list: string[]): void {
+  let last: string | null = null;
+
+  for (const word of list) {
+    if (last && word === last) {
+      throw new Error(`tlp.js:deduplicateDuplicated error: consecutive word ${word}`);
+    }
+    last = word;
+  }
+}
+
+/**
+ * hundreds -> hundred
+ * thousands -> thousand
+ * millions -> million
+ * 
+ * Modifies in place
+ */
+export function normalizeScales(list: string[]): void {
+  for (let i = 0, l = list.length; i < l; i += 1) {
+    const word = list[i];
+    if (normalize.has(word)) {
+      list[i] = normalize.get(word) as string;
+    }
+  }
+}
+
 type ComparisonOptonsType = "over" | "under" | "equal";
 const matchComparison: ComparisonOptonsType[] = ["over", "under", "equal"];
 type ExtractComparisonTermReturnType = {
   comparison: ComparisonOptonsType;
   words: string[];
 };
-
-const extractComparisonTermTh = (msg: string) => new Error(`extractComparisonTerm error: ${msg}`);
+const extractComparisonTermTh = (msg: string) => new Error(`tlp.js:extractComparisonTerm error: ${msg}`);
 /**
- *  filters out words
- *
- * over equal under
+ * filters out words: over & equal & under
  *
  * and then returns first found of those with the rest of the words
+ *
+ * Throwing exceptions along the way
  */
 export function extractComparisonTerm(list: string[]): ExtractComparisonTermReturnType {
   const comp: ComparisonOptonsType[] = [];
@@ -71,6 +108,22 @@ export function extractComparisonTerm(list: string[]): ExtractComparisonTermRetu
     comparison: comp[0],
     words,
   };
+}
+
+const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.js:extractNumbersAndScales error: ${msg}`);
+/**
+ * filters out words for numbers (one two three ...) and scales (thousand million etc..)
+ *
+ * and returns them
+ *
+ * Throws exception if no numbers found
+ */
+export function extractNumbersAndScales(list: string[]): string[] {
+  const buffer: string[] = [];
+
+  let hasNumber = false;
+
+  return buffer;
 }
 
 const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
