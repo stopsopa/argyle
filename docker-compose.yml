@@ -65,6 +65,9 @@ services:
       dockerfile: Dockerfile
       target: image
     container_name: ${PROJECT_NAME}_node
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
     depends_on:

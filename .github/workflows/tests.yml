@@ -82,6 +82,8 @@ jobs:
         run: npm run server:build
       - name: UNIT TESTS
         run: npx jest
+      - name: wait for docker compose to be up
+        run: TIMEOUTSEC="1000" node .github/healtcheck.js
 
       - name: docker log
         run: cat var/compose.log
