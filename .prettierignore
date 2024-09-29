@@ -4,3 +4,6 @@ node_modules
 /shell/
 /var/
 /docker/
+docker/mysql_db/argylesd/#innodb_temp/
+# this one in particular was causing Error:  EACCES: permission denied, scandir '/home/runner/work/argyle/argyle/docker/mysql_db/argylesd/#innodb_temp'
+# in CI/CD pipeline when executing npx prettier --config prettier.config.mjs --check .

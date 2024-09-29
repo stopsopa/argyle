@@ -43,7 +43,7 @@ jobs:
         run: docker ps
 
       - name: prettier check
-        run: node node_modules/.bin/prettier --config prettier.config.mjs --check .
+        run: npx prettier --config prettier.config.mjs --check .
       - name: docker log
         run: cat var/compose.log
 
