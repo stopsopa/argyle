@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import { fetchJson } from "../../server/functions/fetch";
+import formatNumber from "../../server/functions/formatNumber";
 import "./App.css";
 
 import { PaymentsType } from "../../server/model/payments";
@@ -73,7 +74,7 @@ function App() {
                   {list.map((item) => (
                     <tr key={item.id}>
                       <td>{item.id}</td>
-                      <td>{item.amount}</td>
+                      <td>{formatNumber(item.amount, ', ')}</td>
                       <td>{item.created}</td>
                       <td>{item.updated}</td>
                     </tr>
