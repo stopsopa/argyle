@@ -1,0 +1,68 @@
+* {
+  font-family: Inter, sans-serif;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1,
+    /* fix for Chrome */ "zero",
+    "ss01";
+  color: #575757;
+}
+#root {
+  border: 1px solid #eaeaea;
+  text-align: left;
+  padding: 10px;
+  min-height: calc(100vh - 39px);
+  margin-top: 8px;
+}
+.main img[alt="React logo"],
+.main img[alt="Vite logo"] {
+  width: 35px;
+  height: 35px;
+  padding: 10px;
+}
+.main {
+  .flex {
+    display: flex;
+    & > .flex-grow {
+      flex-grow: 1;
+    }
+    & > .flex-v-center {
+      align-items: center;
+    }
+  }
+  input[type="text"] {
+    padding: 10px;
+  }
+  button {
+    border: 1px solid gray;
+    line-height: 36px;
+    font-size: 18px;
+    background-color: #f3f3f3;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .search {
+    display: flex;
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  .loading {
+    color: gray;
+  }
+  .error {
+    color: red;
+    float: right;
+  }
+  .payments {
+    width: 100%;
+    thead > tr {
+      & > th:first-child {
+        width: 10ex;
+      }
+      & > th:nth-child(3),
+      & > th:last-child {
+        width: 238px;
+      }
+    }
+  }
+}

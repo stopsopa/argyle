@@ -8,10 +8,10 @@ export const setupPool = (config: PoolOptions): void => {
   pool = mysql.createPool(config);
 };
 
-export default function getPool(): Pool {
+export const getPool = (): Pool => {
   if (typeof pool === "undefined") {
     throw th(`mysql2 pool is not initialized, use setupPool() first`);
   }
 
   return pool;
-}
+};

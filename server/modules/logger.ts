@@ -15,10 +15,10 @@ export const setupPino = (): void => {
   });
 };
 
-export default function getLogger(): pino.Logger {
+export const getLogger = (): pino.Logger => {
   if (typeof logger === "undefined") {
     throw th("Logger is not initialized, use setupPino() first");
   }
 
   return logger;
-}
+};

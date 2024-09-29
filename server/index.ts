@@ -2,74 +2,79 @@ import "dotenv/config";
 
 import path from "path";
 
-import express, { Express, Request, Response } from "express";
+import express, { Request, Response } from "express";
 
 import env, { envInt } from "./lib/env";
 
 import checkDir from "./lib/checkDir";
 import checkFile from "./lib/checkFile";
 
-import getLogger, { setupPino } from "./modules/logger";
+import { setupPino, getLogger } from "./modules/logger";
 
-import getPool, { setupPool } from "./modules/mysql";
-
-import { PaymentsType } from "./model/payments";
+import { setupPool } from "./modules/mysql";
 
 import api from "./api";
 
 (async function () {
-  // deliberately not using try catch here, errors happening during server setup should crash the server
+  try {
+    setupPino();
 
-  setupPino();
+    const port = envInt("NODE_PORT", "3000");
 
-  setupPool({
-    port: envInt("MYSQL_PORT"),
-    host: env("MYSQL_HOST"),
-    user: env("MYSQL_USER"),
-    database: env("MYSQL_DB"),
-    password: env("MYSQL_PASS"),
-  });
+    setupPool({
+      port: envInt("MYSQL_PORT"),
+      host: env("MYSQL_HOST"),
+      user: env("MYSQL_USER"),
+      database: env("MYSQL_DB"),
+      password: env("MYSQL_PASS"),
+    });
 
-  const app: Express = express();
+    const app = express();
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-  const directory = await checkDir(path.resolve(__dirname, "..", "vite", "dist"));
-  const index = await checkFile(path.resolve(directory, "index.html"));
+    const directory = await checkDir(path.resolve(__dirname, "..", "vite", "dist"));
+    const index = await checkFile(path.resolve(directory, "index.html"));
 
-  app.use(express.static(directory));
+    app.use("/api", api);
 
-  const port = envInt("NODE_PORT", "3000");
+    // serve statics
+    app.use(express.static(directory));
 
-  app.use("/api", api);
+    /**
+     * and if request was not handled by any other route and reached the end
+     * serve default index.html for vite if request 'accept' header has text/html
+     * for any other continue which will result in 404
+     */
+    app.get("*", (req: Request, res: Response, next) => {
+      if (req.headers?.accept?.includes("text/html")) {
+        res.sendFile(index);
+      } else {
+        next();
+      }
+    });
 
-  app.get("/sql", async (req: Request, res: Response) => {
-    try {
-      const pool = getPool();
+    app.listen(port, () => {
+      getLogger().info(`Server is running at http://localhost:${port}`);
 
-      const [results, fields] = await pool.execute<PaymentsType[]>("SELECT * FROM payments");
+      // readiness prompt for humans
+      console.log(`  
+    🌎 Server is running at http://localhost:${port}
+  `);
+    });
+  } catch (e) {
+    // I'm deliberately rethrowing the errors which might occure during server setup
+    // and unhandled exception or unhandled promise in modern node will crash the server
+    // at this point that exactly what I want
+    // I will log it to kibana first though
 
-      res.json(results);
-    } catch (e) {}
-  });
+    const logger = getLogger();
 
-  /**
-   * and if request was not handled by any other route and reached the end
-   * serve default index.html for vite if request 'accept' header has text/html
-   */
-  app.get("*", (req: Request, res: Response, next) => {
-    if (req.headers?.accept?.includes("text/html")) {
-      res.sendFile(index);
-    } else {
-      next();
-    }
-  });
+    logger.fatal({ err: e, xray: "server" }, "Server setup error");
 
-  app.listen(port, () => {
-    getLogger().info(`Server is running at http://localhost:${port}`);
-    console.log(`  
-  🌎 Server is running at http://localhost:${port}
-`);
-  });
+    logger.flush(() => {
+      throw e;
+    });
+  }
 })();

@@ -3,7 +3,7 @@
  * I would consider the best to make sure all envs are extracted
  * when server is still starting and immediately crash it if any env is missing.
  *
- * Good idea would be also to validate them if we expect particular type of value
+ * Good idea would be also to validate envs if we expect particular type of value
  * and if something is off then also throw to stop server at start
  */
 const th = (msg: string) => new Error(`env.ts error: ${msg}`);

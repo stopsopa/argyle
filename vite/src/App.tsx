@@ -1,42 +1,92 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
+import { PaymentsType } from "../../server/model/payments";
+
 function App() {
-  const [count, setCount] = useState(0);
+  const [start, setStart] = useState<boolean>(true);
 
-  const [json, setJson] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  async function load() {
-    const res = await fetch("/api/test");
+  const [error, setError] = useState<null | string>(null);
 
-    const json = await res.json();
+  const [list, setList] = useState<PaymentsType[]>([]);
 
-    setJson(json);
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    try {
+      setStart(false);
+
+      setLoading(true);
+
+      setError(null);
+
+      const res = await fetch("/api/sql");
+
+      const json = (await res.json()) as PaymentsType[];
+
+      setList(json);
+    } catch (err) {
+      const e = err as Error;
+
+      setError(e.message);
+    }
+
+    setLoading(false);
   }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
+      <div className="main">
+        <div className="flex">
           <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-
-        <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+
+          {loading && <span className="flex flex-v-center loading">Loading...</span>}
+
+          {error && <div className="error">{error}</div>}
+        </div>
+        <form onSubmit={onSubmit}>
+          <div className="flex">
+            <div className="flex-grow flex">
+              <input type="text" className="search" />
+            </div>
+            <div>
+              <button>🔎 search</button>
+            </div>
+          </div>
+          <hr />
+          {list && list.length > 0 ? (
+            <>
+              <table className="payments">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>amount</th>
+                    <th>created</th>
+                    <th>updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {list.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>{item.amount}</td>
+                      <td>{item.created}</td>
+                      <td>{item.updated}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <div>{start ? `⌨️ type what you are looking for and press search` : `📁 No results`}</div>
+          )}
+        </form>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-      <button onClick={load}>load</button>
-      {json && <pre>{JSON.stringify(json, null, 4)}</pre>}
     </>
   );
 }

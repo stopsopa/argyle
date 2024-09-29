@@ -1,40 +1,29 @@
-import express, { Express, Request, Response } from "express";
+import express, { Request, Response } from "express";
 
-import getPool, { setupPool } from "../modules/mysql";
+import { getPool } from "../modules/mysql";
 
-import { Count } from "../model/payments";
+import healthcheck from "./healthcheck";
+
+import { PaymentsType } from "../model/payments";
 
 const router = express.Router();
 
-router.get("/healthcheck", async (req: Request, res: Response) => {
+import { getLogger } from "../modules/logger";
+
+router.get("/sql", async (req: Request, res: Response) => {
   try {
     const pool = getPool();
 
-    // It's probably not the best condition to check if table is not empty
-    // But I'm checking what I need to check in the scope of this task
-    // This is later consumed by
-    // TIMEOUTSEC="1000" node .github/healtcheck.js in the pipeline
-    // and in the docker compose file too
-    const [results] = await pool.execute<Count[]>("SELECT count(*) count FROM payments");
+    const [results] = await pool.execute<PaymentsType[]>("SELECT * FROM payments");
 
-    const count = results?.[0]?.count;
+    res.json(results);
+  } catch (e) {
+    res.status(500).json(`Server error`);
 
-    if (count > 0) {
-      res.send("true");
-    } else {
-      res.status(500).send("false"); // 500 since this is server issue
-    }
-
-    res.send(count > 0 ? "true" : "false");
-  } catch (e) {}
+    getLogger().error({ err: e, xray: "api-sql" }, "SQL error");
+  }
 });
 
-router.get("/test", (req: Request, res: Response) => {
-  res.json({ all: new Date().getTime() });
-});
-
-router.get("/timeout", (req: Request, res: Response) => {
-  //   res.json({ all: new Date().getTime() });
-});
+router.get("/healthcheck", healthcheck);
 
 export default router;
