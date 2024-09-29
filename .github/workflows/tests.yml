@@ -8,7 +8,13 @@ jobs:
     runs-on: ubuntu-22.04 
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      # let's start compose up right after clone and move on with next steps
+      # there will be later step though checking if compose is up have launched successfully
+      - name: docker compose up
+        run: docker compose --project-name argylesd --env-file .env up -d | var/compose.log & disown   
+        
       - uses: actions/setup-node@v3
         with:
           node-version: 20.17.0
@@ -26,12 +32,7 @@ jobs:
         id: restore-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      # let's start compose up right after clone and move on with next steps
-      # there will be later step though checking if compose is up have launched successfully
-      - name: docker compose up
-        run: docker compose --project-name argylesd --env-file .env up -d | var/compose.log & disown    
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }} 
 
       - name: test if cache revived?
         if: always()
