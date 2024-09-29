@@ -25,7 +25,7 @@ jobs:
       # there will be later step though checking if compose is up have launched successfully
       - name: docker compose up
         # run: sudo docker compose --project-name argylesd --env-file .env up -d mysql fixtures node > var/compose.log & disown   
-        run: sudo docker compose --project-name argylesd --env-file .env up -d mysql fixtures node > var/compose.log & disown   
+        run: sudo docker compose --env-file .env up -d mysql fixtures node > var/compose.log & disown   
 
       # - name: Run docker-compose
       #   uses: hoverkraft-tech/compose-action@v2.0.1
