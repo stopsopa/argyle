@@ -82,4 +82,7 @@ jobs:
         run: npm run server:build
       - name: UNIT TESTS
         run: npx jest
+
+      - name: docker log
+        run: cat var/compose.log
         
