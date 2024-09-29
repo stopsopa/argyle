@@ -28,11 +28,30 @@
 
 import { directory, sequence, multipliers, normalize } from "./nlp.dictionary";
 
+const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
+
+const extractComparisonTermTh = (msg: string) => new Error(`tlp.js:extractComparisonTerm error: ${msg}`);
+
+const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.js:extractNumbersAndScales error: ${msg}`);
+
+const numberTest = /^\d+$/;
+
+type NumbersOrStringsType = string | number;
+
+type ComparisonOptonsType = "over" | "under" | "equal";
+const matchComparison: ComparisonOptonsType[] = ["over", "under", "equal"];
+type ExtractComparisonTermReturnType = {
+  comparison: ComparisonOptonsType;
+  words: string[];
+};
+
 /**
  * one one -> Incorrect input
+ *
+ * Just iterates and maybe throws an exception
  */
-export function deduplicate(list: string[]): void {
-  let last: string | null = null;
+export function deduplicate(list: NumbersOrStringsType[]): void {
+  let last: NumbersOrStringsType | null = null;
 
   for (const word of list) {
     if (last && word === last) {
@@ -57,14 +76,6 @@ export function normalizeScales(list: string[]): void {
     }
   }
 }
-
-type ComparisonOptonsType = "over" | "under" | "equal";
-const matchComparison: ComparisonOptonsType[] = ["over", "under", "equal"];
-type ExtractComparisonTermReturnType = {
-  comparison: ComparisonOptonsType;
-  words: string[];
-};
-const extractComparisonTermTh = (msg: string) => new Error(`tlp.js:extractComparisonTerm error: ${msg}`);
 /**
  * filters out words: over & equal & under
  *
@@ -100,23 +111,37 @@ export function extractComparisonTerm(list: string[]): ExtractComparisonTermRetu
   };
 }
 
-const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.js:extractNumbersAndScales error: ${msg}`);
 /**
  * filters out words for numbers (one two three ...) and scales (thousand million etc..)
  *
  * and returns them
  *
- * Throws exception if no numbers found
+ * Throws exception if nothing found
  */
-export function extractNumbersAndScales(list: string[]): string[] {
-  const buffer: string[] = [];
+export function extractNumbersAndScales(list: string[]): NumbersOrStringsType[] {
+  const buffer: NumbersOrStringsType[] = [];
 
-  let hasNumber = false;
+  for (let i = 0, l = list.length; i < l; i += 1) {
+    const word = list[i];
+    if (numberTest.test(word)) {
+      buffer.push(parseInt(word, 10));
+    } else {
+      if (directory.has(word)) {
+        if (multipliers.has(word)) {
+          buffer.push(word);
+        } else {
+          buffer.push(directory.get(word) as number);
+        }
+      } 
+    }
+  }
+
+  if (buffer.length === 0) {
+    throw extractNumbersAndScalesTh(`No numeric words found`);
+  }
 
   return buffer;
 }
-
-const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
 
 export default function nlp(phrase: string) {
   if (typeof phrase !== "string") {
@@ -134,4 +159,12 @@ export default function nlp(phrase: string) {
   let comparison;
 
   ({ comparison, words } = extractComparisonTerm(words));
+
+  normalizeScales(words);
+
+  const numbersAndScales = extractNumbersAndScales(words);
+
+  deduplicate(numbersAndScales);
+
+  //   words =
 }

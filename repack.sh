@@ -37,6 +37,7 @@ mv STOPSOPA__argyle/* .
 mv STOPSOPA__argyle/.* .
 rm -rf STOPSOPA__argyle
 mv README_PARENT.md ../README.md
+mv Task.pdf ../Task.pdf
 cd ../..
 
 # # tar -zcvf sd-project.tar.gz sd-project

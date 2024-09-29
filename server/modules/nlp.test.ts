@@ -1,4 +1,4 @@
-import nlp, { extractComparisonTerm, normalizeScales, deduplicate } from "./nlp";
+import nlp, { extractComparisonTerm, normalizeScales, deduplicate, extractNumbersAndScales } from "./nlp";
 
 describe("nlp", () => {
   it("not as string", (done) => {
@@ -91,5 +91,34 @@ describe("nlp", () => {
 
       done();
     }
+  });
+  describe("extractNumbersAndScales", () => {
+    it("regular", (done) => {
+      try {
+        const seed = ["over", "four", "million", 8, "under", "67", "thousand", "one"];
+
+        /* @ts-ignore */
+        const result = extractNumbersAndScales(seed);
+
+        expect(result).toEqual([4, "million", 8, 67, "thousand", 1]);
+
+        done();
+      } catch (e) {
+        done(`Shouldn't throw an error >${e}<`);
+      }
+    });
+    it("throw", (done) => {
+      try {
+        const seed = ["over", "mildlion", "hungdred", "millifon", "under"];
+
+        extractNumbersAndScales(seed);
+
+        done(`Shouln't reach the end`);
+      } catch (e) {
+        expect(String(e)).toEqual("Error: tlp.js:extractNumbersAndScales error: No numeric words found");
+
+        done();
+      }
+    });
   });
 });
