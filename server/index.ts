@@ -4,10 +4,10 @@ import path from "path";
 
 import express, { Request, Response } from "express";
 
-import env, { envInt } from "./lib/env";
+import env, { envInt } from "./functions/env";
 
-import checkDir from "./lib/checkDir";
-import checkFile from "./lib/checkFile";
+import checkDir from "./functions/checkDir";
+import checkFile from "./functions/checkFile";
 
 import { setupPino, getLogger } from "./modules/logger";
 
