@@ -84,7 +84,7 @@ logger(`healthcheckTimeoutMilliseconds: ${healthcheckTimeoutMilliseconds}`);
             const res = await fetch(endpoint, {
               signal: AbortSignal.timeout(5000),
             });
-            
+
             if (!res.ok) {
               throw new Error(`status is not 200 >${res.status}<`);
             }

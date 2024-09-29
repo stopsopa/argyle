@@ -76,8 +76,10 @@ services:
       fixtures:
         condition: service_completed_successfully
     healthcheck:
-      # there is no CURL in alpine image, but we have node for sure
-      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:${NODE_PORT}/api/healthcheck', { signal: AbortSignal.timeout(1000) }).then(res => process.exit(res.ok ? 0 : 1)).catch(() => process.exit(1));\""]
+      test:
+        - "CMD-SHELL"
+        # there is no CURL in the node alpine image, but we have node for sure
+        - 'node -e "fetch(''http://localhost:${NODE_PORT}/api/healthcheck'', { signal: AbortSignal.timeout(1000) }).then(res => process.exit(res.ok ? 0 : 1)).catch(() => process.exit(1));"'
       interval: 10s
       timeout: 10s
       retries: 3

@@ -7,7 +7,7 @@ const th = (msg: string) => new Error(`checkDir.ts error: ${msg}`);
  */
 export default async function checkFile(path: string): Promise<string> {
   const stats = await fs.stat(path);
-  
+
   if (!stats.isFile()) {
     throw th(`Path ${path} is not a file`);
   }
