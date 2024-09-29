@@ -9,6 +9,8 @@ import env, { envInt } from "./lib/env";
 import checkDir from "./lib/checkDir";
 import checkFile from "./lib/checkFile";
 
+import getLogger, { setupPino } from "./modules/logger";
+
 import getPool, { setupPool } from "./modules/mysql";
 
 import { PaymentsType } from "./model/payments";
@@ -17,6 +19,8 @@ import api from "./api";
 
 (async function () {
   // deliberately not using try catch here, errors happening during server setup should crash the server
+
+  setupPino();
 
   setupPool({
     port: envInt("MYSQL_PORT"),
@@ -63,6 +67,7 @@ import api from "./api";
   });
 
   app.listen(port, () => {
+    getLogger().info(`Server is running at http://localhost:${port}`);
     console.log(`  
   🌎 Server is running at http://localhost:${port}
 `);
