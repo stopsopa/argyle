@@ -49,7 +49,6 @@ jobs:
 
       - name: Yarn install
         run: yarn install --frozen-lockfile --production=false
-
       - name: build vite
         run: npm run vite:build
       - name: build server
@@ -58,7 +57,8 @@ jobs:
         run: npx jest
       - name: wait for docker compose to be up
         run: TIMEOUTSEC="1000" node .github/healtcheck.js
-
+      - name: PRETTIER CHECK
+        run: node node_modules/.bin/prettier --config prettier.config.mjs --check .
       - name: docker log
         run: cat var/compose.log
 
