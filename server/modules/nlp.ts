@@ -18,18 +18,8 @@
 
 // We need to handle only over , under and equal phrases and numbers expressed in text
 
-// Choose Node framework of your preference for the implementation
-
-// 87
-
-// [
-//     '503',
-//     '590',
-//     '398',
-//     '540',
-
-//    ]
-
+// -------------------------------
+// Focus on:
 // equal two thousand and forty five
 // equal to $2045
 // under three million one hundred thousand and ninety

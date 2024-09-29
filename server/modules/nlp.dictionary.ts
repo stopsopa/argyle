@@ -28,22 +28,16 @@ export const directory = new Map<string, number>([
   ["eighty", 80],
   ["ninety", 90],
   ["hundred", 100],
-  ["hundreds", 100],
   ["thousand", 1000],
-  ["thousands", 1000],
   ["million", 1000000],
-  ["millions", 1000000],
 ]);
 
 export const sequence: string[] = Array.from(directory.keys());
 
 export const multipliers = new Map<string, boolean>([
   ["hundred", true],
-  ["hundreds", true],
   ["thousand", true],
-  ["thousands", true],
   ["million", true],
-  ["millions", true],
 ]);
 
 export const normalize = new Map<string, string>([
