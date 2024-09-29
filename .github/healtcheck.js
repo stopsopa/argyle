@@ -89,11 +89,11 @@ logger(`healthcheckTimeoutMilliseconds: ${healthcheckTimeoutMilliseconds}`);
               throw new Error(`status is not 200 >${res.status}<`);
             }
 
-            logger(`attempt to ping front healthcheck endpoint: ${endpoint} success`);
+            logger(`success`);
 
             resolve();
           } catch (e) {
-            logger(`attempt to ping front healthcheck endpoint: ${endpoint} failed: ${e}`);
+            logger(`failure: ${e}`);
 
             setTimeout(loop, 1000);
           }
