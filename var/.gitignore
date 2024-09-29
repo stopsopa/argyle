@@ -1,2 +1,8 @@
+# this is just to make sure var directory will be created in CI/CD pipeline
+#
+# I know people like .gitkeep solution but I prefer using .gitignore this way.
+# It's more native to git. Because what special is in .gitkeep file for git?
+# and logic of preserving var directory is localised here in this directory
+# I don't have to put anything in main .gitignore  
 *
 !.gitignore
