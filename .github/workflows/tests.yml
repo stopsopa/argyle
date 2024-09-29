@@ -69,7 +69,7 @@ jobs:
           ls -la node_modules || true
 
       - name: Yarn install
-        run: yarn install --production=false
+        run: yarn install --frozen-lockfile --production=false
 
       # - uses: actions/cache/save@v3 # https://github.com/actions/cache/blob/main/caching-strategies.md#reusing-primary-key-from-restore-cache-as-input-to-save-action
       #   with:
@@ -85,4 +85,9 @@ jobs:
 
       - name: docker log
         run: cat var/compose.log
+
+      - name: docker ps
+        if: always()
+        run: |
+          docker ps
         
