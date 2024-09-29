@@ -25,7 +25,6 @@ jobs:
             mysql
             fixtures
             node
-          compose-flags: --project-name argylesd --env-file
 
       - name: docker ps
         if: always()
