@@ -42,7 +42,7 @@ export const fetchData = async (path: string, options?: FetchDataType) => {
     return res;
   }
 
-  throw fetchDataThrow(`valid function returned false for response ${(options?.method ?? "GET")}:${path}`);
+  throw fetchDataThrow(`valid function returned false for response ${options?.method ?? "GET"}:${path}`);
 };
 
 type FetchJsonType = FetchDataType & {
@@ -50,21 +50,20 @@ type FetchJsonType = FetchDataType & {
   body?: BodyInit | any[] | Record<string, any>;
 };
 
-// fetchJson is using internally fetchData and automatically do few things
-//
-// 1) adds
-//        "Conten-type": 'application/json; charset=utf-8'
-//        Accept: 'application/json'
-//    headers
-//
-// 2) Additionally serializes request body to json if array or object given
-//
-// 3) if body is object or array then it sets method "POST" automatically
-//    (but you can set it explicitly too)
-//
-// 4) unwraps response.json() untless raw: true param given
-//
-//
+/**
+ * fetchJson is using internally fetchData and automatically does a few things:
+ *
+ * 1) Adds the following headers:
+ *    - "Content-Type": 'application/json; charset=utf-8'
+ *    - Accept: 'application/json'
+ *
+ * 2) Additionally serializes the request body to JSON if an array or object is given.
+ *
+ * 3) If the body is an object or array, it sets the method to "POST" automatically
+ *    (but you can set it explicitly too).
+ *
+ * 4) Unwraps response.json() unless the raw: true parameter is given.
+ */
 export const fetchJson = async (path: string, options?: FetchJsonType) => {
   options = {
     headers: {

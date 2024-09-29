@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import { fetchJson } from "../../server/functions/fetch";
 import "./App.css";
 
 import { PaymentsType } from "../../server/model/payments";
@@ -24,9 +25,7 @@ function App() {
 
       setError(null);
 
-      const res = await fetch("/api/sql");
-
-      const json = (await res.json()) as PaymentsType[];
+      const json = (await fetchJson("/api/sql")) as PaymentsType[];
 
       setList(json);
     } catch (err) {

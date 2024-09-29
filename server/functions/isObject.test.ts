@@ -1,7 +1,7 @@
 // I like to have more strict implementation of isObject function.
 // more strict than lodash.isObject
 // here is what is it doing:
-//                                                                      nlab/isObject    lodash/isObject
+//                                                                    custom/isObject    lodash/isObject
 // ✓ lodash.isObject - {}                                                    -> true  -> true (3 ms)
 // ✓ lodash.isObject - Plain object                                          -> true  -> true (1 ms)
 // ✓ lodash.isObject - new function () {}                                    -> true  -> true
