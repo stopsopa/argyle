@@ -21,8 +21,13 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.yml"
+          services: |
+            mysql
+            fixtures
+            node
 
       - name: docker ps
+        if: always()
         run: |
           docker ps
 
@@ -32,6 +37,7 @@ jobs:
           cache: "yarn"
 
       - name: test before bringing cache
+        if: always()
         run: |
           set -x
           pwd
@@ -45,6 +51,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }} 
 
       - name: test if cache revived?
+        if: always()
         run: |
           set -x
           pwd
