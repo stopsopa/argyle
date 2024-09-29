@@ -1,34 +1,18 @@
 const path = require("path");
-// import path from "path";
 
 const fs = require("fs");
-// import fs from "fs";
 
+const dotenv = require("dotenv");
 
-// const path = require("path");
-// const fs = require("fs");
-const dotenv = require("dotenv"); // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 const knex = require("knex");
+
 const getDbName = require("./getDbName.js");
-
-// import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-
-// import knex from "knex";
-
-
-// import getDbName from "./getDbName.cjs";
 
 const env = path.resolve(__dirname, "..", ".env");
 
-// dotenv.config({
-//   path: env,
-// });
-
-// const fsPromises = require("node:fs/promises"); // not available in node v 15
-
 const th = (msg) => new Error(`mysql-test.js error: ${msg}`);
 
-const log = msg => process.stdout.write(`${msg}\n`);
+const log = (msg) => process.stdout.write(`${msg}\n`);
 
 async function notExist(file) {
   try {
@@ -41,19 +25,10 @@ async function notExist(file) {
 
 (async () => {
   try {
-    // {
-    //   const nExist = await notExist(env);
-
-    //   if (nExist) {
-    //     throw th(`file '${env}' doesn't exist (${nExist.message})`);
-    //   }
-    // }
-
     if (!fs.existsSync(env)) {
       throw th(`file '${env}' doesn't exist (${nExist.message})`);
     }
 
-    // require("dotenv").config({ path: env });
     dotenv.config({
       path: env,
     });
@@ -76,7 +51,6 @@ async function notExist(file) {
 
     log(`mysql-test.js: connecting to knex database: >${getDbName()}<`);
 
-    // const connection = require("knex")({
     const connection = knex({
       client: "mysql",
       connection: {
@@ -92,7 +66,7 @@ async function notExist(file) {
 
     const databases = row[0];
 
-    log(databases);
+    log(JSON.stringify(databases, null, 4));
 
     connection.destroy();
   } catch (e) {

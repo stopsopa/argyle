@@ -1,8 +1,5 @@
 const th = (msg) => new Error(`getDbName error: ${msg}`);
 
-/**
- * https://sliceofdev.com/posts/commonjs-and-esm-modules-interoperability-in-nodejs#:~:text=Importing%20CommonJS%20in%20ESM
- */
 module.exports = function getDbName() {
   let MYSQL_DB = "MYSQL_DB";
 

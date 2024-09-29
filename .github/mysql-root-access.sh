@@ -48,26 +48,6 @@ require_non_empty_var "${0}" "MYSQL_PASS"
 
 _MYSQL_DB_ENV_NAME="MYSQL_DB"
 
-# NOTICE !!!
-# NOTICE !!!
-# NOTICE !!!
-# NOTICE !!!
-# Generally it is possible that this functionality of swaping env vars containing target database might not be needed in CI/CD environment but let's leave it as is for now
-# after all by default MYSQL_DB env var will be used
-# NOTICE !!!
-# NOTICE !!!
-# NOTICE !!!
-# NOTICE !!!
-#
-#
-#                 so as a final result this script now is working only with MYSQL_DB, that's all.
-#                 and it will stay like this
-#
-#
-# if [ "${MYSQL_DB_CHANGE}" != "" ]; then
-#     _MYSQL_DB_ENV_NAME="${MYSQL_DB_CHANGE}"
-# fi
-
 echo "_MYSQL_DB_ENV_NAME >${_MYSQL_DB_ENV_NAME}<"
 
 _MYSQL_DB_ENV_VALUE="$(eval echo "\$${_MYSQL_DB_ENV_NAME}")"
@@ -81,8 +61,7 @@ fi
 
 echo "_MYSQL_DB_ENV_VALUE >${_MYSQL_DB_ENV_VALUE}<"
 
-# CONTAINER="${PROJECT_NAME}_mysql"
-CONTAINER="mysql_container" # that's fixed name from github action mysql service
+CONTAINER="mysql_container" # that's fixed name just from github action mysql service
 
 docker exec -i "${CONTAINER}" mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '${MYSQL_PASS}'; flush privileges;"
 

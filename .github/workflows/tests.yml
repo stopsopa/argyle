@@ -1,24 +1,16 @@
-# use [no ci] to skip triggering pipeline
-#     from: https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
-
 name: Testing
 on:
   push:
     branches:
       - main
-  pull_request:
-  # trigger only for main and PR, commits to branches will be ignored
-  # if you wan't to trigger ci/cd for branch then just create PR
 jobs:
   test:
-    runs-on: ubuntu-22.04 # https://github.com/actions/runner-images#available-images
+    runs-on: ubuntu-22.04 
     timeout-minutes: 10
-    services: # https://github.com/actions/example-services/actions/runs/449599975/workflow
+    services: # 
       mysql:
         image: mysql/mysql-server:8.0.27
         env:
-          #          MYSQL_DATABASE: knex
-          #          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: pass
           MYSQL_ROOT_HOST: "%"
         ports:
