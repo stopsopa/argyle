@@ -12,7 +12,7 @@
     "vite:build": "/bin/bash shell/vite.sh npm run build",
     "vite:dev": "/bin/bash shell/vite.sh npm run dev",
     "server:check": "tsc --noEmit",
-    "server:build": "/bin/bash shell/server_build.sh",
+    "server:build": "/bin/bash shell/server-build.sh",
     "server:dev": "npx nodemon server/index.ts",
     "server:run": "node server-build/index.js"
   },

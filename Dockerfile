@@ -8,7 +8,7 @@ ENTRYPOINT echo "base_stage Dockerfile stage"
 
 FROM base_stage AS build
 RUN NODE_ENV="production" /bin/sh shell/vite.sh npm run build && \
-    NODE_ENV="production" /bin/sh shell/server_build.sh
+    NODE_ENV="production" /bin/sh shell/server-build.sh
 ENTRYPOINT echo "build Dockerfile stage"
 
 FROM base_stage AS unit
