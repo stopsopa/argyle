@@ -24,6 +24,7 @@ jobs:
       # let's start compose up right after clone and move on with next steps
       # there will be later step though checking if compose is up have launched successfully
       - name: docker compose up
+        # run: sudo docker compose --project-name argylesd --env-file .env up -d mysql fixtures node > var/compose.log & disown   
         run: sudo docker compose --project-name argylesd --env-file .env up -d mysql fixtures node > var/compose.log & disown   
 
       # - name: Run docker-compose
