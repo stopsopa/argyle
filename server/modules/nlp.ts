@@ -132,7 +132,7 @@ export function extractNumbersAndScales(list: string[]): NumbersOrStringsType[] 
         } else {
           buffer.push(directory.get(word) as number);
         }
-      } 
+      }
     }
   }
 
