@@ -22,13 +22,16 @@ jobs:
         with:
           compose-file: "./docker-compose.yml"
 
+      - name: docker ps
+        run: |
+          docker ps
+
       - uses: actions/setup-node@v3
         with:
           node-version: 20.17.0
           cache: "yarn"
 
       - name: test before bringing cache
-        if: always()
         run: |
           set -x
           pwd
@@ -42,7 +45,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }} 
 
       - name: test if cache revived?
-        if: always()
         run: |
           set -x
           pwd
