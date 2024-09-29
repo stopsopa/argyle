@@ -65,6 +65,6 @@ jobs:
       - name: run tests in docker
         run: |
           docker build -t argylesd:base_stage --target base_stage .
-          docker run -it --entrypoint="" argylesd:base_stage npx jest
+          docker run -i --entrypoint="" argylesd:base_stage npx jest
         
         
