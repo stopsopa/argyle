@@ -13,11 +13,6 @@ jobs:
         with:
           node-version: 20.17.0
           cache: "yarn"
-
-      # let's start compose up and let other steps happen in parallel
-      - name: docker compose up
-        run: docker compose --project-name argylesd --env-file .env up -d | var/compose.log & disown
-
       - name: test before bringing cache
         if: always()
         run: |
@@ -31,6 +26,12 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+          # let's start compose up and move on with next steps
+          # there will be later step though checking if compose is up have launched successfully
+          - name: docker compose up
+            run: docker compose --project-name argylesd --env-file .env up -d | var/compose.log & disown
+    
 
       - name: test if cache revived?
         if: always()
@@ -47,6 +48,7 @@ jobs:
         with:
           path: node_modules
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+
       - name: build vite 
         run: npm run vite:build
       - name: build server 
