@@ -67,7 +67,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: image
-    image: ${PROJECT_NAME}:node
+    image: registry-1.docker.io/${PROJECT_NAME}:node
     container_name: ${PROJECT_NAME}_node
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
