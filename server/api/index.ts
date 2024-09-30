@@ -60,7 +60,7 @@ router.post("/search", async (req: Request, res: Response) => {
   } catch (e) {
     res.status(500).json(`Server error`);
 
-    getLogger().error({ err: e, xray: "api-sql" }, "Search error");
+    getLogger().error({ err: e, xray: "api-search" }, "Search error");
   }
 });
 

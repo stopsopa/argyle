@@ -34,9 +34,9 @@ import { directory, multipliers, normalize } from "./nlp.dictionary";
 
 const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
 
-const extractComparatorTermTh = (msg: string) => new Error(`tlp.js:extractComparatorTerm error: ${msg}`);
+const extractComparatorTermTh = (msg: string) => new Error(`tlp.ts:extractComparatorTerm error: ${msg}`);
 
-const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.js:extractNumbersAndScales error: ${msg}`);
+const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.ts:extractNumbersAndScales error: ${msg}`);
 
 export const numberRegex = /^.*?(\d+).*$/;
 
@@ -65,7 +65,7 @@ export function deduplicate(list: NumbersOrStringsType[]): void {
 
   for (const word of list) {
     if (last && word === last) {
-      throw new Error(`tlp.js:deduplicateDuplicated error: consecutive word ${word}`);
+      throw new Error(`tlp.ts:deduplicateDuplicated error: consecutive word ${word}`);
     }
     last = word;
   }

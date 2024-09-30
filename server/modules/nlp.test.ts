@@ -130,7 +130,7 @@ describe("nlp", () => {
 
         done(`Shouln't reach the end`);
       } catch (e) {
-        expect(String(e)).toEqual("Error: tlp.js:extractComparatorTerm error: No comparator term found");
+        expect(String(e)).toEqual("Error: tlp.ts:extractComparatorTerm error: No comparator term found");
 
         done();
       }
@@ -142,7 +142,7 @@ describe("nlp", () => {
         done(`Shouln't reach the end`);
       } catch (e) {
         expect(String(e)).toEqual(
-          "Error: tlp.js:extractComparatorTerm error: No numeric words found beyond comparator terms",
+          "Error: tlp.ts:extractComparatorTerm error: No numeric words found beyond comparator terms",
         );
 
         done();
@@ -172,7 +172,7 @@ describe("nlp", () => {
 
       done(`Shouln't reach the end`);
     } catch (e) {
-      expect(String(e)).toEqual("Error: tlp.js:deduplicateDuplicated error: consecutive word four");
+      expect(String(e)).toEqual("Error: tlp.ts:deduplicateDuplicated error: consecutive word four");
 
       done();
     }
@@ -245,7 +245,7 @@ describe("nlp", () => {
 
         done(`Shouln't reach the end`);
       } catch (e) {
-        expect(String(e)).toEqual("Error: tlp.js:extractNumbersAndScales error: No numeric words found");
+        expect(String(e)).toEqual("Error: tlp.ts:extractNumbersAndScales error: No numeric words found");
 
         done();
       }

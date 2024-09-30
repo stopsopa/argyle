@@ -48,6 +48,7 @@ jobs:
         # normally I would run here npx prettier --config prettier.config.mjs --check .
         # but pipeline was throwing: https://i.imgur.com/BMn468p.png
         # so above was the fastest solution
+
       - name: docker log
         if: always()
         run: cat var/compose.log
