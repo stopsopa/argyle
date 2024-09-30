@@ -1,13 +1,13 @@
-// As a user, when I enter the text "over fifty four" to the input field,
+// As a user, when I enter the text "over fifty four" to the input field, -- case 4
 // I want see all payments with amount greater than $54
 
-// As a user, when I enter the text "equal two thousand and forty five" to the input field,
+// As a user, when I enter the text "equal two thousand and forty five" to the input field, -- case 2
 // I want see all payments with amount equal to $2045
 
-// As a user, when I enter the text "under three million one hundred thousand and ninety" to the input field,
+// As a user, when I enter the text "under three million one hundred thousand and ninety" to the input field, - case 1
 // I want see all payments with amount lower than $3100090
 
-// As a user, when I enter the text "asdasd" to the input field,
+// As a user, when I enter the text "asdasd" to the input field, -- case 6
 // I want see an error: "Incorrect input"
 
 // As a user, when I enter the text "one one" to the input field,
@@ -20,11 +20,15 @@
 
 // -------------------------------
 // Focus on:
-// equal two thousand and forty five
-// equal to $2045
-// under three million one hundred thousand and ninety
+// equal two thousand and forty five      -   case 2
+// equal to $2045  - case 3
+// under three million one hundred thousand and ninety  -> [3, "million", 1, "hundred", "thousand", 90] - case 1
 // asdasd -> Incorrect input
 // one one -> Incorrect input
+
+// interesting cases
+// under twenty three million fifty one hundred thousand and ninety two
+//      -> [20, 3, "million", 50, 1, "hundred", "thousand", 90, 2]
 
 import { directory, sequence, multipliers, normalize } from "./nlp.dictionary";
 
@@ -34,7 +38,7 @@ const extractComparisonTermTh = (msg: string) => new Error(`tlp.js:extractCompar
 
 const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.js:extractNumbersAndScales error: ${msg}`);
 
-const numberTest = /^\d+$/;
+export const numberRegex = /^.*?(\d+).*$/;
 
 type NumbersOrStringsType = string | number;
 
@@ -122,9 +126,9 @@ export function extractNumbersAndScales(list: string[]): NumbersOrStringsType[] 
   const buffer: NumbersOrStringsType[] = [];
 
   for (let i = 0, l = list.length; i < l; i += 1) {
-    const word = list[i];
-    if (numberTest.test(word)) {
-      buffer.push(parseInt(word, 10));
+    const word = String(list[i]);
+    if (numberRegex.test(word)) {
+      buffer.push(parseInt(word.replace(numberRegex, "$1"), 10));
     } else {
       if (directory.has(word)) {
         if (multipliers.has(word)) {
@@ -141,6 +145,84 @@ export function extractNumbersAndScales(list: string[]): NumbersOrStringsType[] 
   }
 
   return buffer;
+}
+
+/**
+ * [20, 3, "million", 50, 1, "hundred", "thousand", 90, 2]
+ * transforms to
+ * [23, "million", 51, "hundred", "thousand", 92]
+ *
+ * here is weird case but I will pretend nothing happen and just proceed with adding
+ * I could throw exceptions here refusing to process, but let's make it more lenient
+ * [4, 17, "million", 3, 14, "hundred", "thousand", 6, 40]
+ * [21, "million", 17, "hundred", "thousand", 46]
+ */
+export function addJustNumbers(list: NumbersOrStringsType[]): NumbersOrStringsType[] {
+  const buffer: NumbersOrStringsType[] = [];
+
+  let nbuff: number = 0;
+
+  for (let i = 0, l = list.length; i < l; i += 1) {
+    const number = list[i];
+
+    if (typeof number === "number") {
+      nbuff += number;
+    } else {
+      if (nbuff > 0) {
+        buffer.push(nbuff);
+        nbuff = 0;
+      }
+      buffer.push(number);
+    }
+  }
+
+  if (nbuff > 0) {
+    buffer.push(nbuff);
+  }
+
+  return buffer;
+}
+
+/**
+ * [21, "million", 17, "hundred", "thousand", 46]
+ * transforms to
+ * [21000000, 1700000, 46]
+ */
+export function multiplyNumbers(list: NumbersOrStringsType[]): number[] {
+  const buffer: number[] = [];
+
+  let num: number = 0;
+
+  for (let i = 0, l = list.length; i < l; i += 1) {
+    const word = list[i];
+    if (typeof word === "number") {
+      if (num === 0) {
+        num = word;
+      } else {
+        buffer.push(num);
+
+        num = word;
+      }
+    } else {
+      const mul = directory.get(word) as number;
+
+      if (num === 0) {
+        buffer.push(mul);
+      } else {
+        num *= mul;
+      }
+    }
+  }
+
+  if (num !== 0) {
+    buffer.push(num);
+  }
+
+  return buffer;
+}
+
+export function finalAdd(list: number[]): number {
+  return list.reduce((acc, val) => acc + val, 0);
 }
 
 export default function nlp(phrase: string) {
@@ -162,9 +244,29 @@ export default function nlp(phrase: string) {
 
   normalizeScales(words);
 
-  const numbersAndScales = extractNumbersAndScales(words);
+  let numbersAndScales = extractNumbersAndScales(words);
 
   deduplicate(numbersAndScales);
 
-  //   words =
+  const log: NumbersOrStringsType[][] = [];
+
+  log.push([...numbersAndScales]);
+
+  numbersAndScales = addJustNumbers(numbersAndScales);
+
+  log.push([...numbersAndScales]);
+
+  const numbers = multiplyNumbers(numbersAndScales);
+
+  log.push([...numbers]);
+
+  const number = finalAdd(numbers);
+
+  log.push([number]);
+
+  return {
+    comparison,
+    number,
+    log,
+  };
 }
