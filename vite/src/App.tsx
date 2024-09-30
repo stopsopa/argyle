@@ -1,12 +1,10 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, MouseEvent } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import { fetchJson } from "../../server/functions/fetch";
 import formatNumber from "../../server/functions/formatNumber";
-import { SearchRequest } from "../../server/types/search";
+import { SearchRequest, SearchResponse } from "../../server/types/search";
 import "./App.css";
-
-import { PaymentsType } from "../../server/model/payments";
 
 function App() {
   const [start, setStart] = useState<boolean>(true);
@@ -15,16 +13,16 @@ function App() {
 
   const [error, setError] = useState<null | string>(null);
 
-  const [list, setList] = useState<PaymentsType[]>([]);
-
-  const [search, setSearch] = useState<string>("");
+  const [response, setResponse] = useState<SearchResponse | null>(null);
 
   const [debug, setDebug] = useState<boolean>(false);
+
+  const [input, setInput] = useState<string>("");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const normalized = search.trim();
+    const normalized = input.trim();
 
     if (!normalized) {
       // don't process if empty after trim
@@ -42,9 +40,9 @@ function App() {
 
       const json = (await fetchJson("/api/search", {
         body,
-      })) as PaymentsType[];
+      })) as SearchResponse;
 
-      setList(json);
+      setResponse(json);
     } catch (err) {
       const e = err as Error;
 
@@ -52,6 +50,11 @@ function App() {
     }
 
     setLoading(false);
+  }
+  function onButton(e: MouseEvent<HTMLButtonElement>, input: string) {
+    e.preventDefault();
+    console.log("trige");
+    setInput(input);
   }
 
   return (
@@ -68,7 +71,7 @@ function App() {
         <form onSubmit={onSubmit}>
           <div className="flex">
             <div className="flex-grow flex">
-              <input type="text" className="search" onChange={(e) => setSearch(e.target.value)} />
+              <input type="text" className="search" value={input} onChange={(e) => setInput(e.target.value)} />
             </div>
             <div>
               <button>🔎 search</button>
@@ -79,9 +82,46 @@ function App() {
             <input type="checkbox" checked={debug} onChange={() => setDebug(!debug)} />
             debug mode
           </label>
-          {debug ? "debug..." : error && <div className="error">Incorrect input</div>}
+          <button className="small" onClick={(e) => onButton(e, `over fifty four`)}>
+            case 1
+          </button>
+          <button className="small" onClick={(e) => onButton(e, `equal two thousand and forty five`)}>
+            case 2
+          </button>
+          <button className="small" onClick={(e) => onButton(e, `under three million one hundred thousand and ninety`)}>
+            case 3
+          </button>
+          <button className="small" onClick={(e) => onButton(e, `asdasd`)}>
+            case 4
+          </button>
+          <button className="small" onClick={(e) => onButton(e, `one one`)}>
+            case 5
+          </button>
+          <button className="small" onClick={(e) => onButton(e, `equal to $2045`)}>
+            case 6
+          </button>
+          <button className="small" onClick={(e) => onButton(e, `over zero`)}>
+            list all
+          </button>
+          {debug && (
+            <pre>
+              {JSON.stringify(
+                (function (r) {
+                  const copy = { ...r };
+
+                  delete copy.results;
+
+                  return copy;
+                })(response),
+                null,
+                4,
+              )}
+            </pre>
+          )}
+          {!debug && response?.error && <div className="error">Incorrect input</div>}
           <hr />
-          {list && list.length > 0 ? (
+          <hr />
+          {response?.results && response?.results?.length > 0 ? (
             <>
               <table className="payments">
                 <thead>
@@ -93,7 +133,7 @@ function App() {
                   </tr>
                 </thead>
                 <tbody>
-                  {list.map((item) => (
+                  {response?.results.map((item) => (
                     <tr key={item.id}>
                       <td>{item.id}</td>
                       <td>{formatNumber(item.amount, ", ")}</td>

@@ -40,6 +40,13 @@
     background-color: #f3f3f3;
     padding-left: 15px;
     padding-right: 15px;
+    &.small {
+      margin-left: 10px;
+      padding-left: 8px;
+      padding-right: 8px;
+      font-size: 12px;
+      line-height: 16px;
+    }
   }
   .search {
     display: flex;
@@ -51,6 +58,8 @@
   }
   .error {
     color: red;
+  }
+  .right {
     float: right;
   }
   .payments {

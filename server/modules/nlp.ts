@@ -52,7 +52,7 @@ type ExtractComparatorTermReturnType = {
 export type NlpReturnType = {
   comparator: ComparatorOptonsMysqlType;
   number: number;
-  log: NumbersOrStringsType[][];
+  stages: NumbersOrStringsType[][];
 };
 
 /**
@@ -254,21 +254,21 @@ export default function nlp(phrase: string): NlpReturnType {
 
   deduplicate(numbersAndScales);
 
-  const log: NumbersOrStringsType[][] = [];
+  const stages: NumbersOrStringsType[][] = [];
 
-  log.push([...numbersAndScales]);
+  stages.push([...numbersAndScales]);
 
   numbersAndScales = addJustNumbers(numbersAndScales);
 
-  log.push([...numbersAndScales]);
+  stages.push([...numbersAndScales]);
 
   const numbers = multiplyNumbers(numbersAndScales);
 
-  log.push([...numbers]);
+  stages.push([...numbers]);
 
   const number = finalAdd(numbers);
 
-  log.push([number]);
+  stages.push([number]);
 
   let mysql: ComparatorOptonsMysqlType = "=";
 
@@ -282,6 +282,6 @@ export default function nlp(phrase: string): NlpReturnType {
   return {
     comparator: mysql,
     number,
-    log,
+    stages,
   };
 }

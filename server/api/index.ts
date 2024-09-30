@@ -14,6 +14,13 @@ import nlp, { NlpReturnType } from "../modules/nlp";
 
 const router = express.Router();
 
+/**
+ * This function is little too open regarding information what is happening in this endpoint
+ * But I wanted to power debug mode
+ *
+ * In real scenario I would return 200 with list and 500 or 404 with generic error
+ * and I would gather as much infor as possible in logs
+ */
 router.post("/search", async (req: Request, res: Response) => {
   let body: SearchRequest | null = null;
 
@@ -22,7 +29,11 @@ router.post("/search", async (req: Request, res: Response) => {
 
     let error: string | null = null;
 
-    let parsed: NlpReturnType;
+    let parsed: NlpReturnType | null = null;
+
+    let query: string | null = null;
+
+    let results: PaymentsType[] = [];
 
     try {
       parsed = nlp(body.query);
@@ -31,9 +42,9 @@ router.post("/search", async (req: Request, res: Response) => {
 
       // it is safe to combine comperator from nlp with the query, it can only return '=', '<' or '>'
       // and only when it will not throw an error
-      const query = `SELECT * FROM payments WHERE ${parsed.comparator} ?`;
+      query = `SELECT * FROM payments WHERE amount ${parsed.comparator} ?`;
 
-      const [results] = await pool.execute<PaymentsType[]>(query, [parsed.number]);
+      [results] = await pool.execute<PaymentsType[]>(query, [parsed.number]);
     } catch (err) {
       const e = err as Error;
 
@@ -42,12 +53,14 @@ router.post("/search", async (req: Request, res: Response) => {
 
     res.json({
       error,
-      results: [],
+      results,
+      nlp: parsed,
+      query,
     } as SearchResponse);
   } catch (e) {
     res.status(500).json(`Server error`);
 
-    getLogger().error({ err: e, xray: "api-sql" }, "SQL error");
+    getLogger().error({ err: e, xray: "api-sql" }, "Search error");
   }
 });
 

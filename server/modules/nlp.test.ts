@@ -40,7 +40,7 @@ describe("nlp", () => {
       expect(result).toEqual({
         comparator: "=",
         number: 2045,
-        log: [[2, "thousand", 40, 5], [2, "thousand", 45], [2000, 45], [2045]],
+        stages: [[2, "thousand", 40, 5], [2, "thousand", 45], [2000, 45], [2045]],
       });
 
       done();
@@ -55,7 +55,7 @@ describe("nlp", () => {
       expect(result).toEqual({
         comparator: "=",
         number: 2045,
-        log: [[2045], [2045], [2045], [2045]],
+        stages: [[2045], [2045], [2045], [2045]],
       });
 
       done();
@@ -70,7 +70,7 @@ describe("nlp", () => {
       expect(result).toEqual({
         comparator: "<",
         number: 3100090,
-        log: [
+        stages: [
           [3, "million", 1, "hundred", "thousand", 90],
           [3, "million", 1, "hundred", "thousand", 90],
           [3000000, 100000, 90],
@@ -90,7 +90,7 @@ describe("nlp", () => {
       expect(result).toEqual({
         comparator: ">",
         number: 54,
-        log: [[50, 4], [54], [54], [54]],
+        stages: [[50, 4], [54], [54], [54]],
       });
 
       done();
