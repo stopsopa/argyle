@@ -8,7 +8,7 @@ import { PaymentsType } from "../model/payments";
 
 import { getLogger } from "../modules/logger";
 
-import { SearchRequest } from "../types/search";
+import { SearchRequest, SearchResponse } from "../types/search";
 
 import nlp, { NlpReturnType } from "../modules/nlp";
 
@@ -20,7 +20,7 @@ router.post("/search", async (req: Request, res: Response) => {
   try {
     body = req.body as SearchRequest;
 
-    let error: string;
+    let error: string | null = null;
 
     let parsed: NlpReturnType;
 
@@ -29,16 +29,21 @@ router.post("/search", async (req: Request, res: Response) => {
 
       const pool = getPool();
 
-      const query = `SELECT * FROM payments WHERE `;
+      // it is safe to combine comperator from nlp with the query, it can only return '=', '<' or '>'
+      // and only when it will not throw an error
+      const query = `SELECT * FROM payments WHERE ${parsed.comparator} ?`;
 
-      const [results] = await pool.execute<PaymentsType[]>("SELECT * FROM payments");
+      const [results] = await pool.execute<PaymentsType[]>(query, [parsed.number]);
     } catch (err) {
       const e = err as Error;
 
       error = e.message;
     }
 
-    // res.json(results);
+    res.json({
+      error,
+      results: [],
+    } as SearchResponse);
   } catch (e) {
     res.status(500).json(`Server error`);
 

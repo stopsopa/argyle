@@ -19,6 +19,8 @@ function App() {
 
   const [search, setSearch] = useState<string>("");
 
+  const [debug, setDebug] = useState<boolean>(false);
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -36,7 +38,7 @@ function App() {
 
       setError(null);
 
-      const body: SearchRequest = { query: normalized };
+      const body: SearchRequest = { query: normalized, debug };
 
       const json = (await fetchJson("/api/search", {
         body,
@@ -72,6 +74,11 @@ function App() {
               <button>🔎 search</button>
             </div>
           </div>
+          <hr />
+          <label>
+            <input type="checkbox" checked={debug} onChange={() => setDebug(!debug)} />
+            debug mode
+          </label>
           <hr />
           {list && list.length > 0 ? (
             <>
