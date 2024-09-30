@@ -30,7 +30,7 @@
 // under twenty three million fifty one hundred thousand and ninety two
 //      -> [20, 3, "million", 50, 1, "hundred", "thousand", 90, 2]
 
-import { directory, sequence, multipliers, normalize } from "./nlp.dictionary";
+import { directory, multipliers, normalize } from "./nlp.dictionary";
 
 const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
 
