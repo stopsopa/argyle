@@ -79,6 +79,7 @@ function App() {
             <input type="checkbox" checked={debug} onChange={() => setDebug(!debug)} />
             debug mode
           </label>
+          {debug ? "debug..." : error && <div className="error">Incorrect input</div>}
           <hr />
           {list && list.length > 0 ? (
             <>
