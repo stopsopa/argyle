@@ -9,9 +9,7 @@ tar -zcvf STOPSOPA__argyle.tar.gz \
     --exclude ".git" \
     --exclude "sd-project.sh" \
     --exclude "build" \
-    --exclude "build" \
     --exclude "vite/dist" \
-    --exclude ".github" \
     --exclude "sd-project" \
     --exclude "docker/mysql_db" \
     --exclude "*.log" \
