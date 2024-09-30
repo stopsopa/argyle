@@ -1,5 +1,5 @@
 import nlp, {
-  extractComparisonTerm,
+  extractComparatorTerm,
   normalizeScales,
   deduplicate,
   extractNumbersAndScales,
@@ -38,7 +38,7 @@ describe("nlp", () => {
       const result = nlp("equal two thousand and forty five");
 
       expect(result).toEqual({
-        comparison: "equal",
+        comparator: "=",
         number: 2045,
         log: [[2, "thousand", 40, 5], [2, "thousand", 45], [2000, 45], [2045]],
       });
@@ -53,7 +53,7 @@ describe("nlp", () => {
       const result = nlp("equal to $2045");
 
       expect(result).toEqual({
-        comparison: "equal",
+        comparator: "=",
         number: 2045,
         log: [[2045], [2045], [2045], [2045]],
       });
@@ -68,7 +68,7 @@ describe("nlp", () => {
       const result = nlp("under three million one hundred thousand and ninety");
 
       expect(result).toEqual({
-        comparison: "under",
+        comparator: "<",
         number: 3100090,
         log: [
           [3, "million", 1, "hundred", "thousand", 90],
@@ -88,7 +88,7 @@ describe("nlp", () => {
       const result = nlp("over fifty four");
 
       expect(result).toEqual({
-        comparison: "over",
+        comparator: ">",
         number: 54,
         log: [[50, 4], [54], [54], [54]],
       });
@@ -109,12 +109,12 @@ describe("nlp", () => {
       done();
     }
   });
-  describe("extractComparisonTerm", () => {
+  describe("extractComparatorTerm", () => {
     it("find", (done) => {
       try {
-        const result = extractComparisonTerm(["over", "equal", "under", "one"]);
+        const result = extractComparatorTerm(["over", "equal", "under", "one"]);
 
-        expect(result.comparison).toEqual("over");
+        expect(result.comparator).toEqual("over");
 
         expect(result.words).toEqual(["one"]);
 
@@ -124,25 +124,25 @@ describe("nlp", () => {
       }
     });
 
-    it("no comparison", (done) => {
+    it("no comparator", (done) => {
       try {
-        extractComparisonTerm(["xx", "ee", "hhg", "one"]);
+        extractComparatorTerm(["xx", "ee", "hhg", "one"]);
 
         done(`Shouln't reach the end`);
       } catch (e) {
-        expect(String(e)).toEqual("Error: tlp.js:extractComparisonTerm error: No comparison term found");
+        expect(String(e)).toEqual("Error: tlp.js:extractComparatorTerm error: No comparator term found");
 
         done();
       }
     });
     it("no numeric", (done) => {
       try {
-        extractComparisonTerm(["over"]);
+        extractComparatorTerm(["over"]);
 
         done(`Shouln't reach the end`);
       } catch (e) {
         expect(String(e)).toEqual(
-          "Error: tlp.js:extractComparisonTerm error: No numeric words found beyond comparison terms",
+          "Error: tlp.js:extractComparatorTerm error: No numeric words found beyond comparator terms",
         );
 
         done();

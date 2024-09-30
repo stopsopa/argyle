@@ -34,7 +34,7 @@ import { directory, sequence, multipliers, normalize } from "./nlp.dictionary";
 
 const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
 
-const extractComparisonTermTh = (msg: string) => new Error(`tlp.js:extractComparisonTerm error: ${msg}`);
+const extractComparatorTermTh = (msg: string) => new Error(`tlp.js:extractComparatorTerm error: ${msg}`);
 
 const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.js:extractNumbersAndScales error: ${msg}`);
 
@@ -42,11 +42,17 @@ export const numberRegex = /^.*?(\d+).*$/;
 
 type NumbersOrStringsType = string | number;
 
-type ComparisonOptonsType = "over" | "under" | "equal";
-const matchComparison: ComparisonOptonsType[] = ["over", "under", "equal"];
-type ExtractComparisonTermReturnType = {
-  comparison: ComparisonOptonsType;
+type ComparatorOptonsType = "over" | "under" | "equal";
+type ComparatorOptonsMysqlType = ">" | "<" | "=";
+const matchComparator: ComparatorOptonsType[] = ["over", "under", "equal"];
+type ExtractComparatorTermReturnType = {
+  comparator: ComparatorOptonsType;
   words: string[];
+};
+export type NlpReturnType = {
+  comparator: ComparatorOptonsMysqlType;
+  number: number;
+  log: NumbersOrStringsType[][];
 };
 
 /**
@@ -87,14 +93,14 @@ export function normalizeScales(list: string[]): void {
  *
  * Throwing exceptions along the way
  */
-export function extractComparisonTerm(list: string[]): ExtractComparisonTermReturnType {
-  const comp: ComparisonOptonsType[] = [];
+export function extractComparatorTerm(list: string[]): ExtractComparatorTermReturnType {
+  const comp: ComparatorOptonsType[] = [];
 
   const words: string[] = [];
 
   for (let i = 0, l = list.length; i < l; i += 1) {
-    const word = list[i] as ComparisonOptonsType;
-    if (matchComparison.includes(word)) {
+    const word = list[i] as ComparatorOptonsType;
+    if (matchComparator.includes(word)) {
       comp.push(word);
     } else {
       words.push(word);
@@ -102,15 +108,15 @@ export function extractComparisonTerm(list: string[]): ExtractComparisonTermRetu
   }
 
   if (comp.length < 1) {
-    throw extractComparisonTermTh(`No comparison term found`);
+    throw extractComparatorTermTh(`No comparator term found`);
   }
 
   if (words.length < 1) {
-    throw extractComparisonTermTh(`No numeric words found beyond comparison terms`);
+    throw extractComparatorTermTh(`No numeric words found beyond comparator terms`);
   }
 
   return {
-    comparison: comp[0],
+    comparator: comp[0],
     words,
   };
 }
@@ -225,7 +231,7 @@ export function finalAdd(list: number[]): number {
   return list.reduce((acc, val) => acc + val, 0);
 }
 
-export default function nlp(phrase: string) {
+export default function nlp(phrase: string): NlpReturnType {
   if (typeof phrase !== "string") {
     throw th(`Phrase ${phrase} should be a string`);
   }
@@ -238,9 +244,9 @@ export default function nlp(phrase: string) {
     throw th(`At least two words are expected`);
   }
 
-  let comparison;
+  let comparator;
 
-  ({ comparison, words } = extractComparisonTerm(words));
+  ({ comparator, words } = extractComparatorTerm(words));
 
   normalizeScales(words);
 
@@ -264,8 +270,17 @@ export default function nlp(phrase: string) {
 
   log.push([number]);
 
+  let mysql: ComparatorOptonsMysqlType = "=";
+
+  if (comparator === "over") {
+    mysql = ">";
+  }
+  if (comparator === "under") {
+    mysql = "<";
+  }
+
   return {
-    comparison,
+    comparator: mysql,
     number,
     log,
   };

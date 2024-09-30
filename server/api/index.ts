@@ -6,17 +6,39 @@ import healthcheck from "./healthcheck";
 
 import { PaymentsType } from "../model/payments";
 
-const router = express.Router();
-
 import { getLogger } from "../modules/logger";
 
-router.get("/sql", async (req: Request, res: Response) => {
+import { SearchRequest } from "../types/search";
+
+import nlp, { NlpReturnType } from "../modules/nlp";
+
+const router = express.Router();
+
+router.post("/search", async (req: Request, res: Response) => {
+  let body: SearchRequest | null = null;
+
   try {
-    const pool = getPool();
+    body = req.body as SearchRequest;
 
-    const [results] = await pool.execute<PaymentsType[]>("SELECT * FROM payments");
+    let error: string;
 
-    res.json(results);
+    let parsed: NlpReturnType;
+
+    try {
+      parsed = nlp(body.query);
+
+      const pool = getPool();
+
+      const query = `SELECT * FROM payments WHERE `;
+
+      const [results] = await pool.execute<PaymentsType[]>("SELECT * FROM payments");
+    } catch (err) {
+      const e = err as Error;
+
+      error = e.message;
+    }
+
+    // res.json(results);
   } catch (e) {
     res.status(500).json(`Server error`);
 

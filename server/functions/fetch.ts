@@ -45,7 +45,7 @@ export const fetchData = async (path: string, options?: FetchDataType) => {
   throw fetchDataThrow(`valid function returned false for response ${options?.method ?? "GET"}:${path}`);
 };
 
-type FetchJsonType = FetchDataType & {
+type FetchJsonType = Omit<FetchDataType, "body"> & {
   raw?: boolean;
   body?: BodyInit | any[] | Record<string, any>;
 };
@@ -82,7 +82,7 @@ export const fetchJson = async (path: string, options?: FetchJsonType) => {
 
   const { raw, ...rest } = options;
 
-  const res = await fetchData(path, rest);
+  const res = await fetchData(path, rest as FetchDataType);
 
   // clone here is to avoid issues with
   //     Uncaught (in promise) TypeError: Already read

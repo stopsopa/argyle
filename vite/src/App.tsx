@@ -3,6 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import { fetchJson } from "../../server/functions/fetch";
 import formatNumber from "../../server/functions/formatNumber";
+import { SearchRequest } from "../../server/types/search";
 import "./App.css";
 
 import { PaymentsType } from "../../server/model/payments";
@@ -16,8 +17,17 @@ function App() {
 
   const [list, setList] = useState<PaymentsType[]>([]);
 
+  const [search, setSearch] = useState<string>("");
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const normalized = search.trim();
+
+    if (!normalized) {
+      // don't process if empty after trim
+      return;
+    }
 
     try {
       setStart(false);
@@ -26,7 +36,11 @@ function App() {
 
       setError(null);
 
-      const json = (await fetchJson("/api/sql")) as PaymentsType[];
+      const body: SearchRequest = { query: normalized };
+
+      const json = (await fetchJson("/api/search", {
+        body,
+      })) as PaymentsType[];
 
       setList(json);
     } catch (err) {
@@ -47,12 +61,12 @@ function App() {
 
           {loading && <span className="flex flex-v-center loading">Loading...</span>}
 
-          {error && <div className="error">{error}</div>}
+          {error && <div className="flex flex-v-center error">{error}</div>}
         </div>
         <form onSubmit={onSubmit}>
           <div className="flex">
             <div className="flex-grow flex">
-              <input type="text" className="search" />
+              <input type="text" className="search" onChange={(e) => setSearch(e.target.value)} />
             </div>
             <div>
               <button>🔎 search</button>
