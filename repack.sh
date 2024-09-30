@@ -8,7 +8,7 @@ tar -zcvf STOPSOPA__argyle.tar.gz \
     --exclude "node_modules" \
     --exclude ".git" \
     --exclude "sd-project.sh" \
-    --exclude "server-build" \
+    --exclude "build" \
     --exclude "build" \
     --exclude "vite/dist" \
     --exclude ".github" \

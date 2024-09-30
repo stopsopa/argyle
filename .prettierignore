@@ -1,5 +1,5 @@
 node_modules
-/server-build/
+/build/
 /coverage/
 /shell/
 /var/

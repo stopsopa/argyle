@@ -12,7 +12,7 @@ ROOT="$(pwd)"
 
 set -e
 
-SERVER_BUILD="${ROOT}/server-build"
+SERVER_BUILD="${ROOT}/build"
 
 rm -rf "${SERVER_BUILD}";
 
