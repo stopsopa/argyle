@@ -31,10 +31,17 @@ export default tseslint.config(
       // for notorious error:
       // 'data' is declared but its value is never read.ts(6133)
       // 'data' is defined but never used.eslint@typescript-eslint/no-unused-vars
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": ["error", { varsIgnorePattern: "^_", argsIgnorePattern: "^_" }],
+    },
+  },
+  {
+    files: ["**/*.js", "**/*.jsx"],
+    rules: {
+      // Ignore variables starting with _
+      // for notorious error:
+      // 'data' is declared but its value is never read.ts(6133)
+      // 'data' is defined but never used.eslint@typescript-eslint/no-unused-vars
+      "no-unused-vars": ["error", { varsIgnorePattern: "^_", argsIgnorePattern: "^_" }],
     },
   },
 );

@@ -8,10 +8,7 @@ import { JSONType } from "../types/JSONType";
 let fetchMockedInstance = fetch;
 
 // found deep in ts-node
-export type FetchType = (
-  input: string | URL | Request,
-  init?: RequestInit,
-) => Promise<Response>;
+export type FetchType = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
 
 /**
  * But it can be overriden for testing purposes
@@ -20,8 +17,7 @@ export const mockFetch = (fetch: FetchType) => {
   fetchMockedInstance = fetch;
 };
 
-const fetchDataThrow = (msg: string) =>
-  new Error(`fetch.ts fetchData error: ${msg}`);
+const fetchDataThrow = (msg: string) => new Error(`fetch.ts fetchData error: ${msg}`);
 
 type FetchDataType = RequestInit & {
   valid?: (res: Response) => boolean;
@@ -37,9 +33,7 @@ function defaultValid(res: Response) {
  */
 export const fetchData = async (path: string, options?: FetchDataType) => {
   if (typeof path !== "string" || !path.trim()) {
-    throw fetchDataThrow(
-      `path parameter should be a string, it is >${typeof path}<`,
-    );
+    throw fetchDataThrow(`path parameter should be a string, it is >${typeof path}<`);
   }
 
   const { valid = defaultValid, ...rest } = options || {};
@@ -50,9 +44,7 @@ export const fetchData = async (path: string, options?: FetchDataType) => {
     return res;
   }
 
-  throw fetchDataThrow(
-    `valid function returned false for response ${options?.method ?? "GET"}:${path}`,
-  );
+  throw fetchDataThrow(`valid function returned false for response ${options?.method ?? "GET"}:${path}`);
 };
 
 type FetchJsonType = Omit<FetchDataType, "body"> & {

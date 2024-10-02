@@ -1,12 +1,4 @@
-
-
-type JSONValue = 
-  | string
-  | number
-  | boolean
-  | null
-  | JSONArray
-  | JSONObject;
+type JSONValue = string | number | boolean | null | JSONArray | JSONObject;
 
 type JSONArray = Array<JSONValue>;
 
