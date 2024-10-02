@@ -35,7 +35,7 @@ export default function formatNumber(num: string, separator: string = ","): stri
     buffer.push(numbers.splice(0, 3));
   } while (numbers.length > 0);
 
-  let result: string[] = [];
+  const result: string[] = [];
 
   for (let i = buffer.length - 1; i >= 0; i -= 1) {
     buffer[i].reverse();

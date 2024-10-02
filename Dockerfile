@@ -11,6 +11,10 @@ RUN NODE_ENV="production" /bin/sh shell/vite.sh npm run build && \
     NODE_ENV="production" /bin/sh shell/build.sh
 ENTRYPOINT echo "build Dockerfile stage"
 
+FROM base_stage AS eslint
+RUN npx eslint
+ENTRYPOINT echo "eslint Dockerfile stage"
+
 FROM base_stage AS unit
 RUN npx jest
 ENTRYPOINT echo "unit Dockerfile stage"

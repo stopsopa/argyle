@@ -64,14 +64,21 @@ function App() {
           <img src={viteLogo} className="logo" alt="Vite logo" />
           <img src={reactLogo} className="logo react" alt="React logo" />
 
-          {loading && <span className="flex flex-v-center loading">Loading...</span>}
+          {loading && (
+            <span className="flex flex-v-center loading">Loading...</span>
+          )}
 
           {error && <div className="flex flex-v-center error">{error}</div>}
         </div>
         <form onSubmit={onSubmit}>
           <div className="flex">
             <div className="flex-grow flex">
-              <input type="text" className="search" value={input} onChange={(e) => setInput(e.target.value)} />
+              <input
+                type="text"
+                className="search"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
             </div>
             <div>
               <button>🔎 search</button>
@@ -79,16 +86,31 @@ function App() {
           </div>
           <hr />
           <label>
-            <input type="checkbox" checked={debug} onChange={() => setDebug(!debug)} />
+            <input
+              type="checkbox"
+              checked={debug}
+              onChange={() => setDebug(!debug)}
+            />
             debug mode
           </label>
-          <button className="small" onClick={(e) => onButton(e, `over fifty four`)}>
+          <button
+            className="small"
+            onClick={(e) => onButton(e, `over fifty four`)}
+          >
             case 1
           </button>
-          <button className="small" onClick={(e) => onButton(e, `equal two thousand and forty five`)}>
+          <button
+            className="small"
+            onClick={(e) => onButton(e, `equal two thousand and forty five`)}
+          >
             case 2
           </button>
-          <button className="small" onClick={(e) => onButton(e, `under three million one hundred thousand and ninety`)}>
+          <button
+            className="small"
+            onClick={(e) =>
+              onButton(e, `under three million one hundred thousand and ninety`)
+            }
+          >
             case 3
           </button>
           <button className="small" onClick={(e) => onButton(e, `asdasd`)}>
@@ -97,7 +119,10 @@ function App() {
           <button className="small" onClick={(e) => onButton(e, `one one`)}>
             case 5
           </button>
-          <button className="small" onClick={(e) => onButton(e, `equal to $2045`)}>
+          <button
+            className="small"
+            onClick={(e) => onButton(e, `equal to $2045`)}
+          >
             case 6
           </button>
           <button className="small" onClick={(e) => onButton(e, `over zero`)}>
@@ -118,7 +143,9 @@ function App() {
               )}
             </pre>
           )}
-          {!debug && response?.error && <div className="error">Incorrect input</div>}
+          {!debug && response?.error && (
+            <div className="error">Incorrect input</div>
+          )}
           <hr />
           {response?.results && response?.results?.length > 0 ? (
             <>
@@ -144,7 +171,11 @@ function App() {
               </table>
             </>
           ) : (
-            <div>{start ? `⌨️ type what you are looking for and press search` : `📁 No results`}</div>
+            <div>
+              {start
+                ? `⌨️ type what you are looking for and press search`
+                : `📁 No results`}
+            </div>
           )}
         </form>
       </div>

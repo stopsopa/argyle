@@ -53,6 +53,11 @@ jobs:
         if: always()
         run: cat var/compose.log
 
+      - name: run eslint in docker
+        run: |
+          docker build -t argylesd:base_stage --target base_stage .
+          docker run -i --entrypoint="" argylesd:base_stage npx eslint
+
       - name: run tests in docker
         run: |
           docker build -t argylesd:base_stage --target base_stage .

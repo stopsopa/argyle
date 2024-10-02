@@ -1,13 +1,12 @@
 import { fetchData, fetchJson, mockFetch, FetchType } from "./fetch";
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 describe("fetch.js", () => {
   describe("fetchData", () => {
     it("basic", (done) => {
       (async function () {
         try {
-          const mock: FetchType = async () => new Response(null, { status: 200 });
+          const mock: FetchType = async () =>
+            new Response(null, { status: 200 });
 
           mockFetch(mock);
 
@@ -39,8 +38,10 @@ describe("fetch.js", () => {
     it("500", (done) => {
       (async function () {
         try {
-          const mock: FetchType = async (input: string | URL | Request, init?: RequestInit) =>
-            new Response(null, { status: 500 });
+          const mock: FetchType = async (
+            _input: string | URL | Request,
+            init?: RequestInit,
+          ) => new Response(null, { status: 500 });
 
           mockFetch(mock);
 
@@ -61,7 +62,10 @@ describe("fetch.js", () => {
       (async function () {
         try {
           /* @ts-ignore */
-          mockFetch((...args) => ({ ok: true, clone: () => ({ json: () => [...args] }) }));
+          mockFetch((...args) => ({
+            ok: true,
+            clone: () => ({ json: () => [...args] }),
+          }));
 
           const data = await fetchJson("/abc");
 
@@ -85,9 +89,14 @@ describe("fetch.js", () => {
       (async function () {
         try {
           /* @ts-ignore */
-          mockFetch((...args) => ({ ok: true, clone: () => ({ json: () => [...args] }) }));
+          mockFetch((...args) => ({
+            ok: true,
+            clone: () => ({ json: () => [...args] }),
+          }));
 
-          const data = await fetchJson("/abc", { headers: { "Content-Type": "text/html", Accept: "xxx" } });
+          const data = await fetchJson("/abc", {
+            headers: { "Content-Type": "text/html", Accept: "xxx" },
+          });
 
           expect(data).toEqual([
             "/abc",
@@ -109,7 +118,10 @@ describe("fetch.js", () => {
       (async function () {
         try {
           /* @ts-ignore */
-          mockFetch((...args) => ({ ok: true, clone: () => ({ json: () => [...args] }) }));
+          mockFetch((...args) => ({
+            ok: true,
+            clone: () => ({ json: () => [...args] }),
+          }));
 
           const data = await fetchJson("/abc", {
             headers: { "Content-Type": "text/html", Accept: "xxx" },

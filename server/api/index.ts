@@ -23,7 +23,7 @@ const router = express.Router();
  */
 router.post("/search", async (req: Request, res: Response) => {
   try {
-    let body = req.body as SearchRequest;
+    const body = req.body as SearchRequest;
 
     let error: string | null = null;
 

@@ -37,7 +37,9 @@ import api from "./api";
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    const directory = await checkDir(path.resolve(__dirname, "..", "vite", "dist"));
+    const directory = await checkDir(
+      path.resolve(__dirname, "..", "vite", "dist"),
+    );
     const index = await checkFile(path.resolve(directory, "index.html"));
 
     app.use("/api", api);

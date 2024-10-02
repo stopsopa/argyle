@@ -34,9 +34,11 @@ import { directory, multipliers, normalize } from "./nlp.dictionary";
 
 const th = (msg: string) => new Error(`nlp.ts error: ${msg}`);
 
-const extractComparatorTermTh = (msg: string) => new Error(`tlp.ts:extractComparatorTerm error: ${msg}`);
+const extractComparatorTermTh = (msg: string) =>
+  new Error(`tlp.ts:extractComparatorTerm error: ${msg}`);
 
-const extractNumbersAndScalesTh = (msg: string) => new Error(`tlp.ts:extractNumbersAndScales error: ${msg}`);
+const extractNumbersAndScalesTh = (msg: string) =>
+  new Error(`tlp.ts:extractNumbersAndScales error: ${msg}`);
 
 export const numberRegex = /^.*?(\d+).*$/;
 
@@ -65,7 +67,9 @@ export function deduplicate(list: NumbersOrStringsType[]): void {
 
   for (const word of list) {
     if (last && word === last) {
-      throw new Error(`tlp.ts:deduplicateDuplicated error: consecutive word ${word}`);
+      throw new Error(
+        `tlp.ts:deduplicateDuplicated error: consecutive word ${word}`,
+      );
     }
     last = word;
   }
@@ -93,7 +97,9 @@ export function normalizeScales(list: string[]): void {
  *
  * Throwing exceptions along the way
  */
-export function extractComparatorTerm(list: string[]): ExtractComparatorTermReturnType {
+export function extractComparatorTerm(
+  list: string[],
+): ExtractComparatorTermReturnType {
   const comp: ComparatorOptonsType[] = [];
 
   const words: string[] = [];
@@ -112,7 +118,9 @@ export function extractComparatorTerm(list: string[]): ExtractComparatorTermRetu
   }
 
   if (words.length < 1) {
-    throw extractComparatorTermTh(`No numeric words found beyond comparator terms`);
+    throw extractComparatorTermTh(
+      `No numeric words found beyond comparator terms`,
+    );
   }
 
   return {
@@ -128,7 +136,9 @@ export function extractComparatorTerm(list: string[]): ExtractComparatorTermRetu
  *
  * Throws exception if nothing found
  */
-export function extractNumbersAndScales(list: string[]): NumbersOrStringsType[] {
+export function extractNumbersAndScales(
+  list: string[],
+): NumbersOrStringsType[] {
   const buffer: NumbersOrStringsType[] = [];
 
   for (let i = 0, l = list.length; i < l; i += 1) {
@@ -163,7 +173,9 @@ export function extractNumbersAndScales(list: string[]): NumbersOrStringsType[] 
  * [4, 17, "million", 3, 14, "hundred", "thousand", 6, 40]
  * [21, "million", 17, "hundred", "thousand", 46]
  */
-export function addJustNumbers(list: NumbersOrStringsType[]): NumbersOrStringsType[] {
+export function addJustNumbers(
+  list: NumbersOrStringsType[],
+): NumbersOrStringsType[] {
   const buffer: NumbersOrStringsType[] = [];
 
   let nbuff: number = 0;
@@ -244,9 +256,11 @@ export default function nlp(phrase: string): NlpReturnType {
     throw th(`At least two words are expected`);
   }
 
-  let comparator;
+  const result = extractComparatorTerm(words);
 
-  ({ comparator, words } = extractComparatorTerm(words));
+  words = result.words;
+
+  const comparator = result.comparator;
 
   normalizeScales(words);
 

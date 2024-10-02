@@ -32,10 +32,10 @@ import isObjectCu from "./isObject";
 // import isObjectLo from "lodash/isObject";
 
 // noop mock instead of real import
-const isObjectLo = (a?: any) => {
+const isObjectLo = (a?: unknown) => {
   return a;
 };
-function expelo(a: any) {
+function expelo(_data?: unknown) {
   return {
     toBeTruthy: () => {},
     toBeFalsy: () => {},
@@ -72,7 +72,7 @@ it("lodash.isObject - using with object that have implemented toString()    -> t
       }
     }
 
-    var t = new CustomClass();
+    const t = new CustomClass();
 
     expect(t + "").toEqual("test...");
 
