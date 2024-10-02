@@ -13,3 +13,4 @@ Dockerfile
 .nvmrc
 .dockerignore
 docker-compose.yml
+/.husky/

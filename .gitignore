@@ -7,3 +7,5 @@ node_modules
 /shell/.env
 *.log
 !var/.gitignore
+/.husky/
+!/.husky/pre-commit
