@@ -33,8 +33,6 @@ export const directory = new Map<string, number>([
   ["million", 1000000],
 ]);
 
-export const sequence: string[] = Array.from(directory.keys());
-
 export const multipliers = new Map<string, boolean>([
   ["hundred", true],
   ["thousand", true],
