@@ -36,7 +36,7 @@ jobs:
         run: npx jest
 
       - name: wait for docker compose to be up
-        run: TIMEOUTSEC="120" node .github/healtcheck.js
+        run: TIMEOUTSEC="120" node .github/healthcheck.js
 
       - name: docker ps
         run: docker ps

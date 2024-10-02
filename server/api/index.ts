@@ -15,17 +15,15 @@ import nlp, { NlpReturnType } from "../modules/nlp";
 const router = express.Router();
 
 /**
- * This function is little too open regarding information what is happening in this endpoint
- * But I wanted to power debug mode
+ * This endpoint is definitely leaking too much information for production
+ * But I wanted to power debug mode for this project implementation
  *
  * In real scenario I would return 200 with list and 500 or 404 with generic error
- * and I would gather as much infor as possible in logs
+ * and I would gather as much information as possible in logs for debugging
  */
 router.post("/search", async (req: Request, res: Response) => {
-  let body: SearchRequest | null = null;
-
   try {
-    body = req.body as SearchRequest;
+    let body = req.body as SearchRequest;
 
     let error: string | null = null;
 

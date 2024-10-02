@@ -3,11 +3,11 @@
  *
  * Run
  *
- *    node .github/healtcheck.js api
+ *    node .github/healthcheck.js api
  *
  * or
  *
- *    TIMEOUTSEC="10" node .github/healtcheck.js
+ *    TIMEOUTSEC="10" node .github/healthcheck.js
  *
  */
 
@@ -17,7 +17,7 @@ const fs = require("fs");
 
 const dotenv = require("dotenv");
 
-const th = (msg) => new Error(`healtcheck.js error: ${msg}`);
+const th = (msg) => new Error(`healthcheck.js error: ${msg}`);
 
 const env = path.resolve(__dirname, "..", ".env");
 

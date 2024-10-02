@@ -25,7 +25,7 @@
 // ✓ lodash.isObject - new Set()                                             -> false -> true
 // ✓ lodash.isObject - new Error()                                           -> false -> true
 //
-// I've commented out tlocks which uses lodash implementation since I'm not using lodash in this project.
+// I've mocked lodash implementation since I have not imported lodash in this project.
 
 // Cu -> custom
 import isObjectCu from "./isObject";

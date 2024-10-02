@@ -15,6 +15,9 @@ import { setupPool } from "./modules/mysql";
 
 import api from "./api";
 
+/**
+ * Setting up server and not allowing it to run if there is something missing
+ */
 (async function () {
   try {
     setupPino();

@@ -15,8 +15,8 @@ export default async function (req: Request, res: Response) {
     // But I'm checking what I need to check in the scope of this task.
     //
     // This is later consumed by
-    // TIMEOUTSEC="1000" node .github/healtcheck.js in the pipeline
-    // and in the docker compose file too
+    // TIMEOUTSEC="1000" node .github/healthcheck.js in the pipeline
+    // and in the docker compose healthcheck too
     const [results] = await pool.execute<Count[]>("SELECT count(*) count FROM payments");
 
     const count = results?.[0]?.count;

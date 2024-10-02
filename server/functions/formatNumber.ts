@@ -6,7 +6,7 @@ const reg = /^\d+\.\d{2}$/;
  * Simple lib for specific case.
  * Just format decimal straight from database
  *
- * So decimal in the form of the string have pretty well defined and simple structure
+ * So decimals are returned from db as strings and have pretty regular and simple structure
  *
  * [\d+].[\d{2}]
  *

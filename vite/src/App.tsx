@@ -25,7 +25,7 @@ function App() {
     const normalized = input.trim();
 
     if (!normalized) {
-      // don't process if empty after trim
+      // don't process if input.value empty after trim
       return;
     }
 
@@ -53,7 +53,7 @@ function App() {
   }
   function onButton(e: MouseEvent<HTMLButtonElement>, input: string) {
     e.preventDefault();
-    console.log("trige");
+
     setInput(input);
   }
 

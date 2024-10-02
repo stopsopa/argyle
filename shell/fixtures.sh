@@ -19,7 +19,7 @@ mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "DROP DATABASE IF EXISTS ${MY
 mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB} /*\!40100 DEFAULT CHARACTER SET utf8 */"
 
 # I culd create table here but I will use restore.sh instead
-# restoring data AND structure in one go
+# restoring data AND table structure in one go
 #
 # mysql -h mysql -u ${MYSQL_USER} -p${MYSQL_PASS} -e "
 # CREATE TABLE `payments` (
