@@ -25,6 +25,7 @@ tar -cvf STOPSOPA__argyle.tar.gz \
 set -x
 
 tar -rvf STOPSOPA__argyle.tar.gz STOPSOPA__argyle/.husky/pre-commit
+rm -rf sd-project/node
 mkdir -p sd-project/node
 mv STOPSOPA__argyle.tar.gz sd-project/node
 
