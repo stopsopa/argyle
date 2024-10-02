@@ -120,7 +120,6 @@ function App() {
           )}
           {!debug && response?.error && <div className="error">Incorrect input</div>}
           <hr />
-          <hr />
           {response?.results && response?.results?.length > 0 ? (
             <>
               <table className="payments">

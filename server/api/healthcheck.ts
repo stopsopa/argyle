@@ -22,13 +22,13 @@ export default async function (req: Request, res: Response) {
     const count = results?.[0]?.count;
 
     if (count > 0) {
-      res.send("true");
+      res.send("true"); // 200 with body "true" since this is success
 
       return;
     }
-
-    res.status(500).send("false"); // 500 since this is server issue
   } catch (e) {
     getLogger().error({ err: e, xray: "healthcheck" }, "Healthcheck error");
   }
+
+  res.status(500).send("false"); // 500 for any other case than success if block
 }
