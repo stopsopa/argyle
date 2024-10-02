@@ -37,7 +37,7 @@ describe("fetch.js", () => {
     it("500", (done) => {
       (async function () {
         try {
-          const mock: FetchType = async (_input: string | URL | Request, init?: RequestInit) =>
+          const mock: FetchType = async (_input: string | URL | Request, _init?: RequestInit) =>
             new Response(null, { status: 500 });
 
           mockFetch(mock);

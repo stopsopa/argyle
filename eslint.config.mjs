@@ -6,7 +6,7 @@ export default tseslint.config(
   // this configuration seems to be ignoring .eslintignore
   // no matter if I have object below or not
   // seems we can ignore only in this object
-  { ignores: ["dist", "vite/dist", "coverage"] },
+  { ignores: ["build", "vite/dist", "coverage"] },
 
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

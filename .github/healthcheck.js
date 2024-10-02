@@ -102,8 +102,6 @@ logger(`healthcheckTimeoutMilliseconds: ${healthcheckTimeoutMilliseconds}`);
       });
     }
 
-    const test = "";
-
     await runner();
 
     logger(`all tests passed - service healthy`);

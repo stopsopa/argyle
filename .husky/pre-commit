@@ -1,14 +1,44 @@
 set +e
 node node_modules/.bin/prettier --config prettier.config.mjs --list-different .
 
-if [ "${?}" != "0" ]; then
-cat <<EEE
+PRETTIER_STATUS="${?}"
+
+npx eslint
+
+ESLINT_STATUS="${?}"
+
+if [ "${PRETTIER_STATUS}" != "0" ] || [ "${ESLINT_STATUS}" != "0" ]; then
+
+    cat <<EEE
+
+HUSY pre-commit failed:
+
+- Prettier: ${PRETTIER_STATUS}
+- ESLint: ${ESLINT_STATUS}
+
+EEE
+
+    if [ "${PRETTIER_STATUS}" != "0" ]; then
+
+        cat <<EEE
 
 unformatted files found, run:
 
     node node_modules/.bin/prettier --config prettier.config.mjs --write .
 
 EEE
+    fi
 
-exit 1
+    if [ "${ESLINT_STATUS}" != "0" ]; then
+        cat <<EEE
+
+eslint errors found, run:
+
+    npx eslint --fix
+
+EEE
+
+    fi
+    
+    exit 1
 fi
