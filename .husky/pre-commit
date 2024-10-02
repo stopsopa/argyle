@@ -1,1 +1,14 @@
-git-format-staged -f 'prettier --ignore-unknown --stdin --stdin-filepath "{}"' .
+set +e
+node node_modules/.bin/prettier --config prettier.config.mjs --list-different .
+
+if [ "${?}" != "0" ]; then
+cat <<EEE
+
+unformatted files found, run:
+
+    node node_modules/.bin/prettier --config prettier.config.mjs --write .
+
+EEE
+
+exit 1
+fi
