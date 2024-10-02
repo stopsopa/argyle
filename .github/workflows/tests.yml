@@ -32,7 +32,7 @@ jobs:
       - name: build vite
         run: npm run vite:build
 
-      - name: unit tests
+      - name: jest tests
         run: npx jest
 
       - name: wait for docker compose to be up

@@ -13,11 +13,11 @@ ENTRYPOINT echo "build Dockerfile stage"
 
 FROM base_stage AS eslint
 RUN npx eslint
-ENTRYPOINT echo "eslint Dockerfile stage"
+ENTRYPOINT npx eslint
 
-FROM base_stage AS unit
+FROM base_stage AS jest
 RUN npx jest
-ENTRYPOINT echo "unit Dockerfile stage"
+ENTRYPOINT npx jest
 
 FROM node:20.17.0-alpine AS image
 USER node:node

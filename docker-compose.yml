@@ -59,6 +59,38 @@ services:
       - scoped-network
     restart: "no"
 
+  # test:
+  # docker build --progress=plain --target jest .
+  jest:
+    depends_on:
+      fixtures:
+        condition: service_completed_successfully
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: jest
+    container_name: ${PROJECT_NAME}_jest
+    networks:
+      - scoped-network
+    restart: "no"
+
+  # test:
+  # docker build --progress=plain --target eslint .
+  eslint:
+    depends_on:
+      jest:
+        condition: service_completed_successfully
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: eslint
+    container_name: ${PROJECT_NAME}_eslint
+    networks:
+      - scoped-network
+    restart: "no"
+
+  # test:
+  # docker build --progress=plain --target image .
   node:
     build:
       context: .
@@ -71,9 +103,7 @@ services:
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
     depends_on:
-      mysql:
-        condition: service_healthy
-      fixtures:
+      eslint:
         condition: service_completed_successfully
     healthcheck:
       test:
