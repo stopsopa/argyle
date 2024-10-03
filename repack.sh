@@ -15,6 +15,7 @@ tar -cvf STOPSOPA__argyle.tar.gz \
     --exclude "STOPSOPA__argyle/node_modules" \
     --exclude "STOPSOPA__argyle/.git" \
     --exclude "STOPSOPA__argyle/build" \
+    --exclude "STOPSOPA__argyle/vite/node_modules" \
     --exclude "STOPSOPA__argyle/vite/dist" \
     --exclude "STOPSOPA__argyle/docker/mysql_db" \
     --exclude "STOPSOPA__argyle/shell/.env" \
