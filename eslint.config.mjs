@@ -6,9 +6,6 @@ import jest from "eslint-plugin-jest";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  { ignores: ["build", "vite/dist", "coverage", ".github"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["server/**/*.{ts,tsx}"],
@@ -57,5 +54,8 @@ export default tseslint.config(
       "jest/no-conditional-expect": "off",
     },
   },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  { ignores: ["build", "vite/dist", "coverage", ".github"] },
   eslintConfigPrettier,
 );
