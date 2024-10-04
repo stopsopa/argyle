@@ -53,7 +53,7 @@ services:
       - ./.env:/data/.env
     entrypoint: >
       bash -c "      
-      /bin/bash fixtures.sh > log.log 2>&1    
+      /bin/bash fixtures.sh | tee log.log 2>&1    
       "
     networks:
       - scoped-network

@@ -3,6 +3,7 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import jest from "eslint-plugin-jest";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
   pluginJs.configs.recommended,
@@ -56,4 +57,5 @@ export default tseslint.config(
       "jest/no-conditional-expect": "off",
     },
   },
+  eslintConfigPrettier,
 );
