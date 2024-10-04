@@ -14,7 +14,7 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.node,
-    }
+    },
   },
 
   {
@@ -23,7 +23,7 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-    }
+    },
   },
   {
     files: ["**/*.test.{ts,tsx}"],

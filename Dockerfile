@@ -1,8 +1,16 @@
 FROM node:20.17.0-alpine AS base_stage
+RUN npm install -g pnpm
 USER node:node
 WORKDIR /usr/src/app
-COPY --chown=node:node ../../package.json ../../yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false && yarn cache clean
+
+# COPY --chown=node:node ../../package.json ../../yarn.lock ./
+# RUN yarn install --frozen-lockfile --production=false && yarn cache clean 
+# I've used yarn but for some reason it was very slow in node:20.17.0-alpine
+
+COPY --chown=node:node ../../package.json ../../pnpm-lock.yaml ./
+RUN ls -la *.yaml
+RUN pnpm install --shamefully-hoist --frozen-lockfile --production=false && pnpm cache clean
+
 COPY --chown=node:node . .
 ENTRYPOINT echo "base_stage Dockerfile stage"
 
@@ -20,10 +28,17 @@ RUN npx jest
 ENTRYPOINT npx jest
 
 FROM node:20.17.0-alpine AS image
+RUN npm install -g pnpm
 USER node:node
 WORKDIR /usr/src/app
-COPY --chown=node:node ./package.json ./yarn.lock ./
-RUN yarn install --frozen-lockfile --production=true && yarn cache clean
+
+# COPY --chown=node:node ./package.json ./yarn.lock ./
+# RUN yarn install --frozen-lockfile --production=true && yarn cache clean
+# I've used yarn but for some reason it was very slow in node:20.17.0-alpine
+
+COPY --chown=node:node ../../package.json ../../pnpm-lock.yaml ./
+RUN pnpm install --shamefully-hoist --frozen-lockfile --production=true && pnpm cache clean
+
 COPY --chown=node:node --from=build /usr/src/app/.env ./.env
 COPY --chown=node:node --from=build /usr/src/app/package.json ./package.json
 COPY --chown=node:node --from=build /usr/src/app/vite ./vite
