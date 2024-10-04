@@ -26,17 +26,6 @@ export default tseslint.config(
     },
   },
   {
-    files: ["**/*.test.{ts,tsx}"],
-    ...jest.configs["flat/recommended"],
-    rules: {
-      ...jest.configs["flat/recommended"].rules,
-      "jest/prefer-expect-assertions": "off", // standard from https://github.com/jest-community/eslint-plugin-jest?tab=readme-ov-file#running-rules-only-on-test-related-files
-      "@typescript-eslint/ban-ts-comment": "off", // Allow @ts-ignore in test files
-      "jest/no-done-callback": "off",
-      "jest/no-conditional-expect": "off",
-    },
-  },
-  {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
       // Ignore variables starting with _
@@ -54,6 +43,17 @@ export default tseslint.config(
       // 'data' is declared but its value is never read.ts(6133)
       // 'data' is defined but never used.eslint@typescript-eslint/no-unused-vars
       "no-unused-vars": ["error", { varsIgnorePattern: "^_", argsIgnorePattern: "^_" }],
+    },
+  },
+  {
+    files: ["**/*.test.{ts,tsx}"],
+    ...jest.configs["flat/recommended"],
+    rules: {
+      ...jest.configs["flat/recommended"].rules,
+      "jest/prefer-expect-assertions": "off", // standard from https://github.com/jest-community/eslint-plugin-jest?tab=readme-ov-file#running-rules-only-on-test-related-files
+      "@typescript-eslint/ban-ts-comment": "off", // Allow @ts-ignore in test files
+      "jest/no-done-callback": "off",
+      "jest/no-conditional-expect": "off",
     },
   },
 );
