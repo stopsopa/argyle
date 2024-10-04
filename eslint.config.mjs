@@ -23,6 +23,12 @@ export default tseslint.config(
       globals: globals.browser,
     },
   },
+
+  // will override all "rules" so put it before
+  // any other config object specifying rules
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
@@ -54,8 +60,6 @@ export default tseslint.config(
       "jest/no-conditional-expect": "off",
     },
   },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
   { ignores: ["build", "vite/dist", "coverage", ".github"] },
   eslintConfigPrettier,
 );
