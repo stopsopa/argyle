@@ -9,7 +9,9 @@ describe("fetch.js", () => {
 
           mockFetch(mock);
 
-          await fetchData("/abc");
+          const res = await fetchData("/abc");
+
+          expect(res.ok).toEqual(true);
 
           done();
         } catch (e) {

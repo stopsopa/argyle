@@ -279,7 +279,7 @@ describe("nlp", () => {
         done(`Shouldn't throw an error >${e}<`);
       }
     });
-    it("regular 2", (done) => {
+    it("regular 3", (done) => {
       try {
         const seed = [4, 17, "million", 3, 14, "hundred", "thousand"];
 
@@ -404,7 +404,7 @@ describe("nlp", () => {
         done(`Shouldn't throw an error >${e}<`);
       }
     });
-    it("no end", (done) => {
+    it("no end 2", (done) => {
       try {
         const seed = ["million", 17, "hundred", "thousand"];
 
@@ -432,7 +432,7 @@ describe("nlp", () => {
         done(`Shouldn't throw an error >${e}<`);
       }
     });
-    it("regular", (done) => {
+    it("regular 2", (done) => {
       try {
         const seed: number[] = [];
 

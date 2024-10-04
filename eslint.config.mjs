@@ -1,27 +1,39 @@
 import js from "@eslint/js";
 import globals from "globals";
+import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
+import jest from "eslint-plugin-jest";
 
 export default tseslint.config(
-  // this configuration seems to be ignoring .eslintignore
-  // no matter if I have object below or not
-  // seems we can ignore only in this object
-  { ignores: ["build", "vite/dist", "coverage"] },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  { ignores: ["build", "vite/dist", "coverage", ".github"] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ["server/**/*.{ts,tsx}"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+    }
+  },
 
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    files: ["vite/**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-    },
-    plugins: {},
-    rules: {},
+    }
   },
   {
-    files: ["**/*.test.ts"],
+    files: ["**/*.test.{ts,tsx}"],
+    ...jest.configs["flat/recommended"],
     rules: {
+      ...jest.configs["flat/recommended"].rules,
+      "jest/prefer-expect-assertions": "off", // standard from https://github.com/jest-community/eslint-plugin-jest?tab=readme-ov-file#running-rules-only-on-test-related-files
       "@typescript-eslint/ban-ts-comment": "off", // Allow @ts-ignore in test files
+      "jest/no-done-callback": "off",
+      "jest/no-conditional-expect": "off",
     },
   },
   {
