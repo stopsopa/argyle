@@ -43,5 +43,7 @@ COPY --chown=node:node --from=build /usr/src/app/.env ./.env
 COPY --chown=node:node --from=build /usr/src/app/package.json ./package.json
 COPY --chown=node:node --from=build /usr/src/app/vite ./vite
 COPY --chown=node:node --from=build /usr/src/app/build ./build
+HEALTHCHECK --interval=10m --timeout=10s --retries=3 --start-period=10s \
+  CMD node -e "fetch('http://localhost:${NODE_PORT}/api/healthcheck', { signal: AbortSignal.timeout(1000) }).then(res => process.exit(res.ok ? 0 : 1)).catch(() => process.exit(1));"
 ENTRYPOINT node build/index.js
 
