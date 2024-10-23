@@ -12,6 +12,8 @@ import { SearchRequest, SearchResponse } from "../types/search";
 
 import nlp, { NlpReturnType } from "../modules/nlp";
 
+import unique from "@stopsopa/jsr-ts-nlab-test/unique";
+
 const router = express.Router();
 
 /**
@@ -60,6 +62,16 @@ router.post("/search", async (req: Request, res: Response) => {
 
     getLogger().error({ err: e, xray: "api-search" }, "Search error");
   }
+});
+
+/**
+ * fetch('/api/any')
+ */
+router.get("/any", (req: Request, res: Response) => {
+  res.json({
+    test: true,
+    unique: unique(),
+  });
 });
 
 router.get("/healthcheck", healthcheck);
