@@ -688,10 +688,10 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@stopsopa/jsr-ts-nlab-test@npm:@jsr/stopsopa__jsr-ts-nlab-test@^0.1.3":
-  version "0.1.3"
-  resolved "https://npm.jsr.io/~/11/@jsr/stopsopa__jsr-ts-nlab-test/0.1.3.tgz"
-  integrity sha512-r99cL+rr/zm1YnImCpGl8zqwfJhFYxpBcaIIPMviU0Y1uVIrZIY13ctDjwpoMlLY42XxcHzP2HBA8oaDfU6DuA==
+"@stopsopa/jsr-ts-nlab-test@npm:@jsr/stopsopa__jsr-ts-nlab-test@^0.1.4":
+  version "0.1.4"
+  resolved "https://npm.jsr.io/~/11/@jsr/stopsopa__jsr-ts-nlab-test/0.1.4.tgz"
+  integrity sha512-m+uAZSdLj+WCRnvp9MnbvngL92JKA8pgXX9gWYySqxRzdMWVwNp0vUqHe9Yc1XvThDZFSYX3hQh1IJvpLnv4dg==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.11"

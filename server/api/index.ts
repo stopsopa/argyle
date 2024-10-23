@@ -14,6 +14,8 @@ import nlp, { NlpReturnType } from "../modules/nlp";
 
 import unique from "@stopsopa/jsr-ts-nlab-test/unique";
 
+import isObject from "@stopsopa/jsr-ts-nlab-test/isObject";
+
 const router = express.Router();
 
 /**
@@ -71,6 +73,7 @@ router.get("/any", (req: Request, res: Response) => {
   res.json({
     test: true,
     unique: unique(),
+    isObject: isObject(true),
   });
 });
 
